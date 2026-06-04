@@ -1179,6 +1179,13 @@
     document.querySelectorAll("[data-open-create]").forEach(btn => btn.addEventListener("click", () => switchView("createView")));
     document.querySelectorAll("[data-open-list]").forEach(btn => btn.addEventListener("click", () => switchView("listView")));
     document.querySelectorAll("[data-open-handled], [data-mark-done]").forEach(btn => btn.addEventListener("click", () => switchView("handledView")));
+    document.addEventListener("click", event => {
+      const handledButton = event.target.closest("[data-open-handled], [data-mark-done]");
+      if (!handledButton) return;
+      event.preventDefault();
+      event.stopPropagation();
+      switchView("handledView");
+    }, true);
 
     document.querySelectorAll(".status-tab").forEach(btn => {
       btn.addEventListener("click", () => {
