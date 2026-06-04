@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>产品原型发布中心</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --card: #ffffff;
+      --text: #1f2430;
+      --muted: #687083;
+      --line: #e6e8ee;
+      --brand: #245bdb;
+      --brand-soft: #eef3ff;
+      --green: #13a66b;
+      --shadow: 0 16px 40px rgba(26, 35, 60, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(36, 91, 219, 0.12), transparent 30%),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 46%, #eef1f6 100%);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    .page {
+      width: min(1120px, calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 54px 0 70px;
+    }
+
+    .hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid rgba(36, 91, 219, 0.12);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(19, 166, 107, 0.12);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: 34px;
+      line-height: 1.18;
+      letter-spacing: -0.04em;
+    }
+
+    .desc {
+      max-width: 690px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .meta {
+      min-width: 210px;
+      padding: 16px 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .meta b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    .meta span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .section-title {
+      margin: 34px 0 14px;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 190px;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      right: -46px;
+      top: -46px;
+      width: 138px;
+      height: 138px;
+      background: radial-gradient(circle, rgba(36, 91, 219, 0.13), transparent 66%);
+      pointer-events: none;
+    }
+
+    .tag {
+      width: fit-content;
+      padding: 5px 10px;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .card h2 {
+      margin: 18px 0 9px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 16px;
+      color: #fff;
+      background: var(--brand);
+      border-radius: 11px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(36, 91, 219, 0.18);
+    }
+
+    .link {
+      color: var(--muted);
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 16px 18px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    @media (max-width: 780px) {
+      .page { width: min(100vw - 28px, 1120px); padding-top: 34px; }
+      .hero { align-items: flex-start; flex-direction: column; }
+      h1 { font-size: 28px; }
+      .grid { grid-template-columns: 1fr; }
+      .meta { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow"><i class="dot"></i>外部评审入口</div>
+        <h1>产品原型发布中心</h1>
+        <p class="desc">
+          这里统一收纳对业务方、运营侧、开发侧可查看的产品原型页面。后续新增需求页面后，直接放到这个入口下，外部访问地址保持同一套发布站点。
+        </p>
+      </div>
+      <aside class="meta">
+        <b>当前状态</b>
+        <span>静态页面，可用于 GitHub Pages / Vercel / Netlify 托管</span>
+      </aside>
+    </section>
+
+    <h3 class="section-title">已发布页面</h3>
+    <section class="grid">
+      <article class="card">
+        <span class="tag">途邦SCRM</span>
+        <h2>设计工单业务演示页</h2>
+        <p>
+          面向业务方查看的不可编辑版本，包含设计工单列表、新建工单、已处理/未处理状态及处理备注查看流程。
+        </p>
+        <div class="actions">
+          <a class="btn" href="./tubang-scrm-design-ticket-workflow-business.html">打开页面</a>
+          <a class="link" href="./tubang-scrm-design-ticket-workflow-business.html" target="_blank">新窗口打开</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="note">
+      后续新增页面时，只需要把新的 HTML 放到本站点目录，并在入口页新增一张卡片。发布后业务方继续访问同一个站点入口即可。
+    </div>
+  </main>
+</body>
+</html>
