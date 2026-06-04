@@ -788,7 +788,7 @@
     <nav class="topnav">
       <span data-edit-key="text:global:span:企业微信">企业微信</span>
       <span data-edit-key="text:global:span:坐席账号">坐席账号</span>
-      <span data-edit-key="text:global:span:版本管理">版本管理</span>
+      <span data-edit-key="text:global:span:版本管理" class="">版本管理</span>
       <span class="active" data-edit-key="text:global:span:营销工具">营销工具</span>
       <span data-edit-key="text:global:span:数据报告" class="">数据报告</span>
       <span data-edit-key="text:global:span:营销模板">营销模板</span>
@@ -796,14 +796,14 @@
       <span data-edit-key="text:global:span:第三方合作">第三方合作</span>
       <span data-edit-key="text:global:span:系统设置">系统设置</span>
     </nav>
-    <div class="user"><strong data-edit-key="text:global:strong:杨柳">杨柳</strong><a href="activity-assistant-prototype-index.html">退出</a></div>
+    <div class="user"><strong data-edit-key="text:global:strong:杨柳" class="">杨柳</strong><a href="activity-assistant-prototype-index.html">退出</a></div>
   </header>
 
   <div class="layout">
     <aside class="sidebar">
       <div class="side-group-title" data-edit-key="text:sidebar:div:抖音素材⌃"><span>抖音素材</span><span>⌃</span></div>
       <div class="side-item" data-edit-key="text:sidebar:div:抖音视频快捷发布">抖音视频快捷发布</div>
-      <div class="side-group-title" data-edit-key="text:sidebar:div:内部工单⌃"><span>内部工单</span><span>⌃</span></div>
+      <div class="side-group-title" data-edit-key="text:sidebar:div:内部工单⌃"><span class="">内部工单</span><span>⌃</span></div>
       <div class="side-item" data-edit-key="text:sidebar:div:抖音云剪工单">抖音云剪工单</div>
       <div class="side-item" data-edit-key="text:sidebar:div:抖音直播工单">抖音直播工单</div>
       <div class="side-item active" data-edit-key="text:sidebar:div:设计工单">设计工单</div>
@@ -815,13 +815,13 @@
 
     <main class="main">
       <div class="prototype-switch">
-        <button class="switch-btn" data-view="listView">列表页</button>
+        <button class="switch-btn active" data-view="listView">列表页</button>
         <button class="switch-btn" data-view="createView">新建页</button>
-        <button class="switch-btn active" data-view="handledView">已处理详情</button>
+        <button class="switch-btn" data-view="handledView">已处理详情</button>
         <button class="switch-btn" data-view="specView">字段需求说明</button>
       </div>
 
-      <section class="page-view" id="listView">
+      <section class="page-view active" id="listView">
         <h1 class="page-title" data-edit-key="text:listView:h1:设计工单">设计工单</h1>
         <div class="store-row mini-editable" data-mini-id="mini:list-store-filter">
           <label data-edit-key="text:listView:label:交付门店名称：">交付门店名称：</label>
@@ -831,7 +831,7 @@
         <div class="content-grid module" data-module-id="design-list">
           
           <div class="store-list">
-            <div data-edit-key="store-list:未关联门店内容">未关联门店内容</div>
+            <div data-edit-key="store-list:未关联门店内容" class="">未关联门店内容</div>
             <div class="active" data-edit-key="store-list:阿尔法电竞">阿尔法电竞</div>
             <div data-edit-key="store-list:轻酷电竞">轻酷电竞</div>
             <div data-edit-key="store-list:线上验证">线上验证</div>
@@ -843,8 +843,8 @@
           <div class="work-panel">
             <div class="status-row">
               <div class="status-tabs">
-                <button class="status-tab" data-ticket-status="pending" data-edit-key="button:listView:未处理:0">未处理</button>
-                <button class="status-tab active" data-ticket-status="done" data-edit-key="button:listView:已处理:1">已处理</button>
+                <button class="status-tab active" data-ticket-status="pending" data-edit-key="button:listView:未处理:0">未处理</button>
+                <button class="status-tab" data-ticket-status="done" data-edit-key="button:listView:已处理:1">已处理</button>
               </div>
             </div>
 
@@ -858,9 +858,9 @@
               <table>
                 <thead>
                   <tr>
-                    <th style="width:14%;" data-edit-key="table:design-list:head:工单名称:0">工单名称⌄</th>
-                    <th style="width:11%;" data-edit-key="table:design-list:head:合作客户:1">合作客户⌄</th>
-                    <th style="width:10%;" data-edit-key="table:design-list:head:抖音POI:2">抖音POI⌄</th>
+                    <th style="width:14%;" data-edit-key="table:design-list:head:工单名称:0" class="">工单名称⌄</th>
+                    <th style="width:11%;" data-edit-key="table:design-list:head:合作客户:1" class="">合作客户⌄</th>
+                    <th style="width:10%;" data-edit-key="table:design-list:head:抖音POI:2" class="">抖音POI⌄</th>
                     <th style="width:10%;" data-edit-key="table:design-list:head:下单来源:3">下单来源⌄</th>
                     <th style="width:11%;" data-edit-key="table:design-list:head:期望交付日期:4">期望交付日期⌄</th>
                     <th style="width:13%;" data-edit-key="table:design-list:head:备注:5" class="">备注</th>
@@ -870,13 +870,13 @@
                     <th style="width:12%;" data-edit-key="table:design-list:head:操作:9" class="">操作</th>
                   </tr>
                 </thead>
-                <tbody id="pendingRows" hidden="">
+                <tbody id="pendingRows">
                   <tr>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:工单名称"><span class="link">6月赛事报名海报设计</span></td>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:合作客户">成都东郊郡区阿尔法空间网吧</td>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:抖音POI">阿尔法电竞</td>
-                    <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:下单来源"><span class="tag amber" data-edit-key="text:listView:span:赛事" contenteditable="true" spellcheck="false">赛事</span></td>
-                    <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:期望交付日期">2026-06-12</td>
+                    <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:下单来源" class=""><span class="tag amber" data-edit-key="text:listView:span:赛事" contenteditable="true" spellcheck="false">赛事</span></td>
+                    <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:期望交付日期" class="">2026-06-12</td>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:备注" class="">用于无畏契约水友赛报名页和门店屏幕。</td>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:工单状态" class="">未处理</td>
                     <td data-edit-key="table:design-list:pendingRows:6月赛事报名海报设计:创建人" class="">陈梦蝶</td>
@@ -896,18 +896,18 @@
                     <td data-edit-key="table:design-list:pendingRows:抖音团购套餐封面图:操作" class=""><button class="btn text" data-open-handled="">已处理</button><button class="btn text">删除</button></td>
                   </tr>
                 </tbody>
-                <tbody id="doneRows">
+                <tbody id="doneRows" hidden="">
                   <tr>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:工单名称"><span class="link">端午活动门店海报</span></td>
-                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:合作客户">轻酷电竞</td>
-                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:抖音POI">轻酷电竞</td>
-                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:下单来源"><span class="tag green" data-edit-key="text:listView:span:途邦" contenteditable="true" spellcheck="false">途邦</span></td>
+                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:合作客户" class="">轻酷电竞</td>
+                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:抖音POI" class="">轻酷电竞</td>
+                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:下单来源" class=""><span class="tag green" data-edit-key="text:listView:span:途邦" contenteditable="true" spellcheck="false">途邦</span></td>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:期望交付日期">2026-05-30</td>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:备注">需要同时放公众号和门店屏幕。</td>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:工单状态">已处理</td>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:创建人" class="">陈梦蝶</td>
                     <td data-edit-key="table:design-list:doneRows:端午活动门店海报:创建时间" class="">2026-05-28<br>17:16:24</td>
-                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:操作" class=""><button class="btn text" data-open-handled="" href="">处理备注</button><button class="btn text">删除</button></td>
+                    <td data-edit-key="table:design-list:doneRows:端午活动门店海报:操作" class=""><button class="btn text" data-open-handled="">处理备注</button><button class="btn text">删除</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -920,7 +920,7 @@
             </div>
 
             <div class="pagination">
-              <span id="pageTotal" data-edit-key="text:listView:span:共 2 条记录 第 1/1 页">共 1 条记录 第 1/1 页</span>
+              <span id="pageTotal" data-edit-key="text:listView:span:共 2 条记录 第 1/1 页">共 2 条记录 第 1/1 页</span>
               <span data-edit-key="text:listView:span:‹">‹</span>
               <span class="page-num" data-edit-key="text:listView:span:1">1</span>
               <span data-edit-key="text:listView:span:›">›</span>
@@ -937,11 +937,11 @@
 
           <div class="form-row mini-editable" data-mini-id="mini:create:工单类型：">
             <label data-edit-key="form-label:createView:工单类型：" class="">工单类型：</label>
-            <div style="height:32px;display:flex;align-items:center;">设计</div>
+            <div style="height:32px;display:flex;align-items:center;" class="">设计</div>
           </div>
 
           <div class="form-row mini-editable" data-mini-id="mini:create:工单名称（对内）：">
-            <label data-edit-key="form-label:createView:工单名称（对内）："><span class="required">*</span>工单名称（对内）：</label>
+            <label data-edit-key="form-label:createView:工单名称（对内）：" class=""><span class="required">*</span>工单名称（对内）：</label>
             <div class="field-wrap">
               <input value="" placeholder="请输入工单名称（对内）" maxlength="20" data-field-key="field:createView:工单名称（对内）：:input">
               <span class="counter">0 / 20</span>
@@ -1019,7 +1019,7 @@
         </div>
       </section>
 
-      <section class="page-view active" id="handledView">
+      <section class="page-view" id="handledView">
         <h1 class="page-title" data-edit-key="text:handledView:h1:设计工单处理详情">设计工单处理详情</h1>
         <div class="detail-card module" data-module-id="design-handled">
           
@@ -1463,7 +1463,12 @@
     }
 
     function normalizeListActions() {
-      document.querySelectorAll("#listView tbody tr").forEach(row => {
+      document.querySelectorAll("#pendingRows tr").forEach(row => {
+        const actionCell = row.lastElementChild;
+        if (!actionCell) return;
+        actionCell.innerHTML = '<button class="btn text" data-open-handled>已处理</button><button class="btn text">删除</button>';
+      });
+      document.querySelectorAll("#doneRows tr").forEach(row => {
         const actionCell = row.lastElementChild;
         if (!actionCell) return;
         actionCell.innerHTML = '<button class="btn text" data-open-handled>处理备注</button><button class="btn text">删除</button>';
