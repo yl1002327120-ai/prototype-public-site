@@ -1463,16 +1463,14 @@
     }
 
     function normalizeListActions() {
-      document.querySelectorAll("#pendingRows tr").forEach(row => {
+      const renderActionCell = (row, fallbackLabel) => {
         const actionCell = row.lastElementChild;
         if (!actionCell) return;
-        actionCell.innerHTML = '<button class="btn text" data-open-handled>已处理</button><button class="btn text">删除</button>';
-      });
-      document.querySelectorAll("#doneRows tr").forEach(row => {
-        const actionCell = row.lastElementChild;
-        if (!actionCell) return;
-        actionCell.innerHTML = '<button class="btn text" data-open-handled>处理备注</button><button class="btn text">删除</button>';
-      });
+        const currentLabel = actionCell.querySelector("button[data-open-handled]")?.textContent?.trim() || fallbackLabel;
+        actionCell.innerHTML = `<button class="btn text" data-open-handled>${currentLabel}</button><button class="btn text">删除</button>`;
+      };
+      document.querySelectorAll("#pendingRows tr").forEach(row => renderActionCell(row, "已处理"));
+      document.querySelectorAll("#doneRows tr").forEach(row => renderActionCell(row, "处理备注"));
       document.querySelectorAll("#listView [data-open-handled]").forEach(button => {
         button.addEventListener("click", () => switchView("handledView"));
       });
