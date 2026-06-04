@@ -25,9 +25,14 @@
 
 `/Applications/codex/prototype-public-site`
 
+## 当前线上地址
+
+- 总入口：https://yl1002327120-ai.github.io/prototype-public-site/
+- 设计工单业务页：https://yl1002327120-ai.github.io/prototype-public-site/tubang-scrm-design-ticket-workflow-business.html
+- GitHub 仓库：https://github.com/yl1002327120-ai/prototype-public-site
+
 ## 本地预览
 
 双击 `start-local-preview.command`，然后访问：
 
 `http://127.0.0.1:4180/`
-

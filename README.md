@@ -7,6 +7,11 @@
 - `index.html`：外部总入口
 - `tubang-scrm-design-ticket-workflow-business.html`：途邦 SCRM 设计工单业务演示页
 
+## 永久访问地址
+
+- 总入口：https://yl1002327120-ai.github.io/prototype-public-site/
+- GitHub 仓库：https://github.com/yl1002327120-ai/prototype-public-site
+
 ## 后续新增页面流程
 
 1. 把新的 HTML 文件放进这个目录。
@@ -23,4 +28,3 @@
 - Source：Deploy from a branch
 - Branch：`main`
 - Folder：`/root`
-
