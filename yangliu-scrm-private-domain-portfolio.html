@@ -484,6 +484,82 @@
       line-height: 1.5;
     }
 
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .qr-card {
+      display: grid;
+      grid-template-columns: 178px minmax(0, 1fr);
+      gap: 22px;
+      align-items: center;
+      min-height: 238px;
+      padding: 24px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: 0 16px 42px rgba(20, 45, 90, 0.08);
+    }
+
+    .qr-img-wrap {
+      display: grid;
+      place-items: center;
+      width: 178px;
+      height: 178px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #dfe8f6;
+      border-radius: 24px;
+      box-shadow: inset 0 0 0 6px #f5f8ff;
+    }
+
+    .qr-img-wrap img {
+      display: block;
+      width: 148px;
+      height: 148px;
+      object-fit: contain;
+    }
+
+    .qr-copy .qr-type {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      color: var(--blue);
+      background: var(--panel-soft);
+      border: 1px solid #d8e7ff;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .qr-copy h3 {
+      margin: 14px 0 10px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .qr-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .qr-copy .qr-hint {
+      display: inline-flex;
+      margin-top: 16px;
+      padding: 8px 11px;
+      color: #334155;
+      background: #f8fbff;
+      border: 1px solid #e3ebf8;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
     .demo-shell {
       display: grid;
       grid-template-columns: 220px minmax(0, 1fr);
@@ -950,8 +1026,23 @@
       }
 
       .problem-grid,
-      .ability-grid {
+      .ability-grid,
+      .qr-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .qr-card {
+        grid-template-columns: 156px minmax(0, 1fr);
+      }
+
+      .qr-img-wrap {
+        width: 156px;
+        height: 156px;
+      }
+
+      .qr-img-wrap img {
+        width: 130px;
+        height: 130px;
       }
 
       .loop {
@@ -1010,11 +1101,18 @@
 
       .problem-grid,
       .ability-grid,
+      .qr-grid,
       .loop,
       .dash-grid,
       .form-grid,
       .side {
         grid-template-columns: 1fr;
+      }
+
+      .qr-card {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
       }
 
       .demo-top {
@@ -1054,6 +1152,7 @@
       <nav class="nav">
         <a href="#background">项目背景</a>
         <a href="#loop">产品闭环</a>
+        <a href="#live">上线入口</a>
         <a href="#demo">核心页面</a>
         <a href="#ability">能力体现</a>
       </nav>
@@ -1200,10 +1299,47 @@
       </div>
     </section>
 
+    <section id="live" class="section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">03 / Live Mini Programs</span>
+          <h2>已上线小程序入口</h2>
+        </div>
+        <p class="section-desc">
+          除后台产品方案外，这里补充两个已上线小程序入口，分别承接电商购物和抽奖营销场景。
+        </p>
+      </div>
+      <div class="qr-grid">
+        <article class="qr-card">
+          <div class="qr-img-wrap">
+            <img src="./qr-mall-mini-program.png" alt="电商购物小程序二维码">
+          </div>
+          <div class="qr-copy">
+            <span class="qr-type">电商购物小程序</span>
+            <h3>商城小程序</h3>
+            <p>承接商品展示、下单支付、权益兑换和复购转化，是私域用户从活动参与走向交易转化的重要入口。</p>
+            <span class="qr-hint">微信扫码查看</span>
+          </div>
+        </article>
+
+        <article class="qr-card">
+          <div class="qr-img-wrap">
+            <img src="./qr-lottery-mini-program.png" alt="抽奖小程序二维码">
+          </div>
+          <div class="qr-copy">
+            <span class="qr-type">抽奖营销小程序</span>
+            <h3>抽奖小程序</h3>
+            <p>承接活动参与、奖品发放、用户互动和核销转化，适合与人群包、优惠券、积分等营销能力组合使用。</p>
+            <span class="qr-hint">微信扫码查看</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <section id="demo" class="section">
       <div class="section-head">
         <div>
-          <span class="section-kicker">03 / Product Case</span>
+          <span class="section-kicker">04 / Product Case</span>
           <h2>核心方案展示</h2>
         </div>
         <p class="section-desc">
@@ -1404,7 +1540,7 @@
     <section id="ability" class="section">
       <div class="section-head">
         <div>
-          <span class="section-kicker">04 / PM Ability</span>
+          <span class="section-kicker">05 / PM Ability</span>
           <h2>能力亮点</h2>
         </div>
         <p class="section-desc">
