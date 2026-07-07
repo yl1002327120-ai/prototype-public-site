@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>活动助手排行榜创建配置</title>
+  <style>
+    :root {
+      --bg: #eef2f8;
+      --nav: #151b2b;
+      --side: #202838;
+      --panel: #ffffff;
+      --panel-soft: #f7f9fc;
+      --text: #1f2635;
+      --muted: #6d7587;
+      --subtle: #9aa4b8;
+      --line: #e1e7f0;
+      --blue: #2f73ff;
+      --blue-deep: #1e55d8;
+      --cyan: #46d9ff;
+      --green: #20b978;
+      --gold: #f3c96a;
+      --red: #f45b69;
+      --shadow: 0 18px 44px rgba(31, 38, 53, 0.09);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 1440px;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(47, 115, 255, 0.12), transparent 28%),
+        radial-gradient(circle at 86% 2%, rgba(70, 217, 255, 0.12), transparent 25%),
+        linear-gradient(180deg, #f7faff 0%, var(--bg) 48%, #e9eef6 100%);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      color: #fff;
+      background: #101623;
+      box-shadow: 0 12px 28px rgba(16, 22, 35, 0.18);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      width: 250px;
+      padding: 0 22px;
+      gap: 12px;
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #2f73ff, #46d9ff);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 10px 24px rgba(47, 115, 255, 0.32);
+    }
+
+    .nav-tabs {
+      display: flex;
+      height: 60px;
+    }
+
+    .nav-tabs a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 22px;
+      color: rgba(255, 255, 255, 0.68);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav-tabs a.active {
+      color: #fff;
+      background: #2567f2;
+    }
+
+    .user {
+      margin-left: auto;
+      padding-right: 26px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      min-height: calc(100vh - 60px);
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #202838, #252d3e);
+      color: #d9e2f3;
+      padding: 18px 14px;
+    }
+
+    .side-title {
+      margin: 12px 10px 9px;
+      color: rgba(217, 226, 243, 0.56);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .side-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 42px;
+      padding: 0 12px;
+      color: #c6d0e2;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .side-item::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+    }
+
+    .side-item.active {
+      color: #fff;
+      background: linear-gradient(135deg, #2f73ff, #1e55d8);
+      box-shadow: 0 14px 28px rgba(47, 115, 255, 0.24);
+    }
+
+    .side-note {
+      margin: 18px 8px 0;
+      padding: 14px;
+      color: #d9e6ff;
+      background: rgba(47, 115, 255, 0.12);
+      border: 1px solid rgba(101, 163, 255, 0.2);
+      border-radius: 16px;
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .main {
+      padding: 22px 24px 46px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 16px;
+      padding: 22px 24px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .crumb {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+    }
+
+    .head-desc {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+      max-width: 820px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 15px;
+      color: #2f3748;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+      border-color: transparent;
+      box-shadow: 0 12px 26px rgba(47, 115, 255, 0.22);
+    }
+
+    .btn.danger {
+      color: #fff;
+      background: var(--red);
+      border-color: var(--red);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .form-area {
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card-hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-hd h2 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.35;
+    }
+
+    .card-hd p {
+      margin: 5px 0 0;
+      color: var(--subtle);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .card-bd {
+      padding: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      color: var(--blue-deep);
+      background: #eaf2ff;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .badge.gold {
+      color: #8b631c;
+      background: #fff4dc;
+    }
+
+    .badge.green {
+      color: #11875b;
+      background: #e9f8f2;
+    }
+
+    .type-switch {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .type-option {
+      position: relative;
+      padding: 17px;
+      background: #f7f9fd;
+      border: 1px solid #e3eaf4;
+      border-radius: 15px;
+      cursor: pointer;
+      min-height: 118px;
+    }
+
+    .type-option.active {
+      background: linear-gradient(180deg, #f4f8ff, #fff);
+      border-color: rgba(47, 115, 255, 0.55);
+      box-shadow: 0 12px 28px rgba(47, 115, 255, 0.12);
+    }
+
+    .type-option b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .type-option span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .type-option .check {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #c7d1e0;
+    }
+
+    .type-option.active .check {
+      border-color: var(--blue);
+      background: radial-gradient(circle, var(--blue) 0 42%, transparent 45%);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-grid.one {
+      grid-template-columns: 1fr;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      color: #3b4354;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .field label em {
+      color: var(--red);
+      font-style: normal;
+      margin-left: 3px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      min-height: 38px;
+      padding: 0 12px;
+      color: #283143;
+      background: #fff;
+      border: 1px solid #dce3ee;
+      border-radius: 11px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .field textarea {
+      min-height: 78px;
+      padding: 10px 12px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field .tip {
+      color: var(--subtle);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 12px;
+      background: #f7f9fd;
+      border: 1px solid #e3eaf4;
+      border-radius: 12px;
+      color: #3c4658;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .check-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+      background: var(--blue);
+      box-shadow: inset 0 0 0 4px #fff;
+      border: 1px solid var(--blue);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 860px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      height: 42px;
+      padding: 0 12px;
+      color: #2f3748;
+      background: #f7f9fc;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+      font-weight: 900;
+    }
+
+    td {
+      padding: 12px;
+      color: #4d586b;
+      border-bottom: 1px solid #edf1f7;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mini-input {
+      width: 100%;
+      height: 34px;
+      padding: 0 10px;
+      border: 1px solid #dce3ee;
+      border-radius: 9px;
+      background: #fff;
+    }
+
+    .rule-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .rule-tab {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid #dce3ee;
+      background: #fff;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .rule-tab.active {
+      color: var(--blue-deep);
+      background: #eaf2ff;
+      border-color: rgba(47, 115, 255, 0.2);
+    }
+
+    .task-section,
+    .event-section {
+      display: none;
+    }
+
+    body[data-rank-type="task"] .task-section {
+      display: block;
+    }
+
+    body[data-rank-type="event"] .event-section {
+      display: block;
+    }
+
+    .preview {
+      position: sticky;
+      top: 78px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .preview-shell {
+      color: #eef3ff;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(55, 116, 255, 0.32), transparent 24%),
+        radial-gradient(circle at 90% 10%, rgba(68, 217, 255, 0.16), transparent 24%),
+        linear-gradient(180deg, #0d1425 0%, #132139 50%, #0e1628 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      box-shadow: 0 30px 80px rgba(11, 18, 33, 0.34);
+      overflow: hidden;
+    }
+
+    .client-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 46px;
+      padding: 0 14px;
+      background: #101523;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .client-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+    }
+
+    .client-v {
+      color: #3a82ff;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .client-nav {
+      display: flex;
+      gap: 14px;
+      color: rgba(238, 243, 255, 0.62);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .client-nav .on {
+      color: #fff;
+    }
+
+    .client-content {
+      padding: 18px;
+    }
+
+    .client-banner {
+      position: relative;
+      min-height: 146px;
+      padding: 18px;
+      border-radius: 14px;
+      overflow: hidden;
+      background:
+        linear-gradient(110deg, rgba(15, 23, 42, 0.16), rgba(15, 23, 42, 0.68)),
+        radial-gradient(circle at 24% 40%, rgba(255, 221, 122, 0.42), transparent 18%),
+        radial-gradient(circle at 72% 18%, rgba(61, 124, 255, 0.52), transparent 30%),
+        linear-gradient(135deg, #244674, #7a3b54 52%, #161f34 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .client-banner h3 {
+      margin: 0;
+      max-width: 280px;
+      font-size: 28px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      text-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    }
+
+    .client-banner p {
+      max-width: 260px;
+      margin: 10px 0 0;
+      color: rgba(238, 243, 255, 0.78);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .client-rewards {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .reward-box {
+      width: 54px;
+      height: 50px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(255, 223, 126, 0.92), rgba(255, 156, 47, 0.85));
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .client-section-title {
+      margin: 18px 0 10px;
+      color: #eef3ff;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .client-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .client-tab {
+      min-width: 96px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(238, 243, 255, 0.72);
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .client-tab.active {
+      color: #fff;
+      background: rgba(47, 115, 255, 0.28);
+      border-color: rgba(88, 151, 255, 0.52);
+    }
+
+    .client-flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 14px;
+      padding: 13px 12px;
+      background: rgba(12, 18, 32, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+    }
+
+    .client-flow span {
+      color: rgba(238, 243, 255, 0.72);
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .client-flow b {
+      display: inline-grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, #2f73ff, #1e55d8);
+      box-shadow: 0 0 18px rgba(47, 115, 255, 0.38);
+      font-size: 12px;
+    }
+
+    .rank-card {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      margin-bottom: 10px;
+    }
+
+    .rank-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .rank-card-head b {
+      font-size: 15px;
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+    }
+
+    .rank-no {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      color: #fff;
+      background: rgba(47, 115, 255, 0.55);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .rank-name {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .rank-sub {
+      margin-top: 2px;
+      color: rgba(238, 243, 255, 0.56);
+      font-size: 11px;
+    }
+
+    .rank-score {
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .preview-note {
+      padding: 14px;
+      color: #4c5870;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      font-size: 13px;
+      line-height: 1.7;
+      box-shadow: var(--shadow);
+    }
+
+    .bottom-bar {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+      padding: 14px 18px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 -12px 32px rgba(31, 38, 53, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    @media (max-width: 1500px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body data-rank-type="task">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">榜</span>
+      活动助手管理后台
+    </div>
+    <nav class="nav-tabs">
+      <a href="#">首页</a>
+      <a href="#" class="active">游戏任务</a>
+      <a href="#">游戏赛事</a>
+      <a href="#">奖励兑换</a>
+      <a href="#">活动管理</a>
+      <a href="#">系统设置</a>
+    </nav>
+    <div class="user">运营账号：杨柳</div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-title">游戏任务</div>
+      <div class="side-item">任务列表</div>
+      <div class="side-item">完成记录</div>
+      <div class="side-item active">排行榜管理</div>
+      <div class="side-title">游戏赛事</div>
+      <div class="side-item">赛事列表</div>
+      <div class="side-item">累计战绩榜</div>
+      <div class="side-item">赛事复盘</div>
+      <div class="side-note">当前页面用于运营新建排行榜活动，发布后玩家端按配置展示榜单、任务、赛事成绩和奖励信息。</div>
+    </aside>
+
+    <main class="main">
+      <section class="page-head">
+        <div>
+          <div class="crumb">游戏任务 / 排行榜管理 / 新建排行榜</div>
+          <h1>新建排行榜</h1>
+          <p class="head-desc">运营在这里创建任务积分榜或赛事排行榜。左侧完成配置，右侧实时预览玩家端展示效果，确认无误后保存草稿或发布上线。</p>
+        </div>
+        <div class="actions">
+          <button class="btn">返回列表</button>
+          <button class="btn">预览玩家端</button>
+          <button class="btn primary">发布排行榜</button>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="form-area">
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>1. 选择榜单类型</h2>
+                <p>不同类型会切换不同规则配置，发布后也会影响玩家端展示样式。</p>
+              </div>
+              <span class="badge">必填</span>
+            </div>
+            <div class="card-bd">
+              <div class="type-switch">
+                <div class="type-option active" data-type="task">
+                  <i class="check"></i>
+                  <b>日常游戏任务积分榜</b>
+                  <span>玩家完成日常游戏任务获得积分，按周榜、月榜、年榜排名，适合拉动持续活跃。</span>
+                </div>
+                <div class="type-option" data-type="event">
+                  <i class="check"></i>
+                  <b>赛事排行榜</b>
+                  <span>按一段时间内的赛事成绩累计排名，展示云顶/无畏的参赛次数、冠军次数、前三次数、赛事积分和获奖情况。</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>2. 基础信息</h2>
+                <p>配置榜单名称、展示时间、可见范围和展示端。</p>
+              </div>
+              <span class="badge green">基础配置</span>
+            </div>
+            <div class="card-bd">
+              <div class="form-grid">
+                <div class="field">
+                  <label>榜单名称<em>*</em></label>
+                  <input id="rankName" value="6月无畏契约任务积分月榜">
+                </div>
+                <div class="field">
+                  <label>榜单状态<em>*</em></label>
+                  <select>
+                    <option>草稿</option>
+                    <option selected>待发布</option>
+                    <option>已发布</option>
+                  </select>
+                </div>
+                <div class="field task-section">
+                  <label>统计周期<em>*</em></label>
+                  <select id="taskPeriod">
+                    <option>周榜</option>
+                    <option selected>月榜</option>
+                    <option>年榜</option>
+                  </select>
+                </div>
+                <div class="field event-section">
+                  <label>赛事榜类型<em>*</em></label>
+                  <input id="eventMode" value="赛事累计战绩榜" readonly>
+                  <div class="tip">赛事排行榜仅做累计战绩榜，不单独创建单场成绩单。</div>
+                </div>
+                <div class="field">
+                  <label>活动时间<em>*</em></label>
+                  <input value="2026-06-01 00:00 至 2026-06-30 23:59">
+                </div>
+                <div class="field">
+                  <label>适用游戏<em>*</em></label>
+                  <select id="gameSelect">
+                    <option>全部游戏</option>
+                    <option selected>无畏契约</option>
+                    <option>云顶之弈</option>
+                    <option>绝地求生</option>
+                    <option>三角洲行动</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>可见范围<em>*</em></label>
+                  <select>
+                    <option selected>企业下全部门店</option>
+                    <option>指定门店</option>
+                    <option>仅当前门店</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field" style="margin-top:14px;">
+                <label>展示端</label>
+                <div class="check-grid">
+                  <div class="check-item"><span class="check-dot"></span>玩家客户端</div>
+                  <div class="check-item"><span class="check-dot"></span>门店云平台</div>
+                  <div class="check-item"><span class="check-dot"></span>企业云平台</div>
+                  <div class="check-item"><span class="check-dot"></span>运营后台</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card task-section">
+            <div class="card-hd">
+              <div>
+                <h2>3. 任务积分规则</h2>
+                <p>选择哪些日常任务计入榜单，并配置每个任务完成后获得的积分。</p>
+              </div>
+              <span class="badge">任务榜规则</span>
+            </div>
+            <div class="card-bd">
+              <div class="rule-tabs">
+                <button class="rule-tab active">按任务计分</button>
+                <button class="rule-tab">按游戏计分</button>
+                <button class="rule-tab">按连续完成加成</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>计入榜单</th>
+                      <th>任务名称</th>
+                      <th>任务条件</th>
+                      <th>完成积分</th>
+                      <th>每日上限</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="badge green">是</span></td>
+                      <td>登录游戏账号</td>
+                      <td>成功登录指定游戏账号</td>
+                      <td><input class="mini-input" value="10"></td>
+                      <td><input class="mini-input" value="1次"></td>
+                      <td>低门槛任务，拉起活跃</td>
+                    </tr>
+                    <tr>
+                      <td><span class="badge green">是</span></td>
+                      <td>完成1局游戏</td>
+                      <td>当日完成一局有效对战</td>
+                      <td><input class="mini-input" value="30"></td>
+                      <td><input class="mini-input" value="3次"></td>
+                      <td>主要积分来源</td>
+                    </tr>
+                    <tr>
+                      <td><span class="badge green">是</span></td>
+                      <td>累计游戏时长</td>
+                      <td>当日游戏时长 ≥ 60 分钟</td>
+                      <td><input class="mini-input" value="50"></td>
+                      <td><input class="mini-input" value="1次"></td>
+                      <td>适合门店提升上机时长</td>
+                    </tr>
+                    <tr>
+                      <td><span class="badge">否</span></td>
+                      <td>首次绑定账号</td>
+                      <td>首次绑定游戏账号</td>
+                      <td><input class="mini-input" value="80"></td>
+                      <td><input class="mini-input" value="仅一次"></td>
+                      <td>可按活动需要开启</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="card event-section">
+            <div class="card-hd">
+              <div>
+                <h2>3. 赛事排名规则</h2>
+                <p>配置累计战绩统计范围、榜单对象和名次积分换算，适合云顶个人榜和无畏队伍/玩家榜。</p>
+              </div>
+              <span class="badge gold">赛事榜规则</span>
+            </div>
+            <div class="card-bd">
+              <div class="form-grid">
+                <div class="field">
+                  <label>累计成绩来源<em>*</em></label>
+                  <select>
+                    <option selected>读取活动助手历史赛事成绩</option>
+                    <option>导入历史赛事成绩</option>
+                    <option>人工补录赛事成绩</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>榜单对象<em>*</em></label>
+                  <select>
+                    <option>玩家个人榜</option>
+                    <option selected>队伍榜 + 玩家继承成绩</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>累计范围<em>*</em></label>
+                  <select>
+                    <option selected>统计时间内全部赛事</option>
+                    <option>指定赛事活动合集</option>
+                    <option>指定门店赛事</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="table-wrap" style="margin-top:14px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>成绩</th>
+                      <th>赛事积分</th>
+                      <th>是否发奖</th>
+                      <th>奖励内容</th>
+                      <th>说明</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>冠军</td>
+                      <td><input class="mini-input" value="100"></td>
+                      <td><span class="badge green">是</span></td>
+                      <td><input class="mini-input" value="100元网费 + 冠军海报"></td>
+                      <td>无畏按队伍，队员继承冠军记录</td>
+                    </tr>
+                    <tr>
+                      <td>亚军</td>
+                      <td><input class="mini-input" value="70"></td>
+                      <td><span class="badge green">是</span></td>
+                      <td><input class="mini-input" value="50元网费"></td>
+                      <td>展示在赛事战绩榜</td>
+                    </tr>
+                    <tr>
+                      <td>季军</td>
+                      <td><input class="mini-input" value="50"></td>
+                      <td><span class="badge green">是</span></td>
+                      <td><input class="mini-input" value="30元网费"></td>
+                      <td>计入前三次数</td>
+                    </tr>
+                    <tr>
+                      <td>完赛</td>
+                      <td><input class="mini-input" value="10"></td>
+                      <td><span class="badge">否</span></td>
+                      <td><input class="mini-input" value="/"></td>
+                      <td>用于鼓励持续参赛</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>4. 奖励配置</h2>
+                <p>配置排名奖励、达标奖励和奖励发放方式。</p>
+              </div>
+              <span class="badge gold">奖励</span>
+            </div>
+            <div class="card-bd">
+              <div class="form-grid two">
+                <div class="field">
+                  <label>发奖方式</label>
+                  <select>
+                    <option selected>榜单结束后人工确认发放</option>
+                    <option>榜单结束后自动发放</option>
+                    <option>玩家手动领取</option>
+                  </select>
+                  <div class="tip">第一版建议人工确认后发放，避免异常数据直接发奖。</div>
+                </div>
+                <div class="field">
+                  <label>奖励库存不足处理</label>
+                  <select>
+                    <option selected>暂停发放并提醒运营</option>
+                    <option>自动替换备用奖励</option>
+                    <option>仍展示但不可领取</option>
+                  </select>
+                  <div class="tip">运营端需能看到失败原因和补发入口。</div>
+                </div>
+              </div>
+
+              <div class="table-wrap" style="margin-top:14px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>排名/条件</th>
+                      <th>奖励类型</th>
+                      <th>奖励内容</th>
+                      <th>发放对象</th>
+                      <th>展示文案</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>第1名</td>
+                      <td>网费</td>
+                      <td><input class="mini-input" value="100元网费"></td>
+                      <td>玩家本人 / 队伍成员</td>
+                      <td><input class="mini-input" value="冠军奖励"></td>
+                    </tr>
+                    <tr>
+                      <td>第2-3名</td>
+                      <td>网费</td>
+                      <td><input class="mini-input" value="50元网费"></td>
+                      <td>玩家本人 / 队伍成员</td>
+                      <td><input class="mini-input" value="前三奖励"></td>
+                    </tr>
+                    <tr>
+                      <td>第4-10名</td>
+                      <td>兑换码</td>
+                      <td><input class="mini-input" value="游戏礼包兑换码"></td>
+                      <td>玩家本人</td>
+                      <td><input class="mini-input" value="前十冲榜奖励"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>5. 玩家端展示配置</h2>
+                <p>配置玩家在客户端看到的标题、说明、按钮和展示模块。</p>
+              </div>
+              <span class="badge">客户端</span>
+            </div>
+            <div class="card-bd">
+              <div class="form-grid two">
+                <div class="field">
+                  <label>客户端标题<em>*</em></label>
+                  <input id="clientTitleInput" value="无畏契约月度冲榜赛">
+                </div>
+                <div class="field">
+                  <label>主按钮文案</label>
+                  <input id="clientButtonInput" value="去完成任务冲榜">
+                </div>
+                <div class="field">
+                  <label>客户端说明</label>
+                  <textarea id="clientDescInput">完成游戏任务获得积分，冲进排行榜前十即可获得网费和游戏礼包奖励。</textarea>
+                </div>
+                <div class="field">
+                  <label>展示模块</label>
+                  <div class="check-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));">
+                    <div class="check-item"><span class="check-dot"></span>我的排名</div>
+                    <div class="check-item"><span class="check-dot"></span>榜单奖励</div>
+                    <div class="check-item"><span class="check-dot"></span>任务入口</div>
+                    <div class="check-item"><span class="check-dot"></span>分享海报</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <div class="bottom-bar">
+            <button class="btn">保存草稿</button>
+            <button class="btn">提交审核</button>
+            <button class="btn primary">发布排行榜</button>
+          </div>
+        </section>
+
+        <aside class="preview">
+          <section class="preview-shell">
+            <div class="client-top">
+              <div class="client-logo"><span class="client-v">V</span> 易乐途活动助手</div>
+              <div class="client-nav"><span class="on">游戏任务</span><span>个人中心</span></div>
+            </div>
+            <div class="client-content">
+              <div class="client-banner">
+                <h3 id="previewTitle">无畏契约月度冲榜赛</h3>
+                <p id="previewDesc">完成游戏任务获得积分，冲进排行榜前十即可获得网费和游戏礼包奖励。</p>
+                <div class="client-rewards">
+                  <div class="reward-box"></div>
+                  <div class="reward-box"></div>
+                  <div class="reward-box"></div>
+                </div>
+              </div>
+
+              <div class="client-section-title">游戏排行榜</div>
+              <div class="client-tabs">
+                <div class="client-tab active" id="previewTabPrimary">任务积分榜</div>
+                <div class="client-tab" id="previewTabSecond">我的排名</div>
+              </div>
+
+              <div class="client-flow" id="previewFlow">
+                <span><b>01</b>登录游戏</span>
+                <span><b>02</b>完成任务</span>
+                <span><b>03</b>获得积分</span>
+                <span><b>04</b>冲榜领奖</span>
+              </div>
+
+              <div class="rank-card">
+                <div class="rank-card-head">
+                  <b id="previewRankTitle">本月积分排行</b>
+                  <span class="badge">TOP 10</span>
+                </div>
+                <div class="rank-list" id="previewRankList">
+                  <div class="rank-row">
+                    <div class="rank-no">1</div>
+                    <div><div class="rank-name">阿杰</div><div class="rank-sub">完成 42 个任务 · 连续活跃 7 天</div></div>
+                    <div class="rank-score">2860</div>
+                  </div>
+                  <div class="rank-row">
+                    <div class="rank-no">2</div>
+                    <div><div class="rank-name">大橘</div><div class="rank-sub">完成 37 个任务 · 无畏主力</div></div>
+                    <div class="rank-score">2510</div>
+                  </div>
+                  <div class="rank-row">
+                    <div class="rank-no">8</div>
+                    <div><div class="rank-name">我自己</div><div class="rank-sub">距离上一名还差 80 分</div></div>
+                    <div class="rank-score">1620</div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="btn primary" style="width:100%;height:44px;" id="previewButton">去完成任务冲榜</button>
+            </div>
+          </section>
+
+          <div class="preview-note">
+            <b>运营预览说明：</b>右侧展示的是玩家端大致效果，参考当前活动助手客户端的深色游戏任务风格。发布前运营需要确认标题、说明、奖励和榜单类型是否与活动目标一致。
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const typeOptions = Array.from(document.querySelectorAll('.type-option'));
+    const rankName = document.getElementById('rankName');
+    const clientTitleInput = document.getElementById('clientTitleInput');
+    const clientDescInput = document.getElementById('clientDescInput');
+    const clientButtonInput = document.getElementById('clientButtonInput');
+    const gameSelect = document.getElementById('gameSelect');
+
+    const previewTitle = document.getElementById('previewTitle');
+    const previewDesc = document.getElementById('previewDesc');
+    const previewButton = document.getElementById('previewButton');
+    const previewTabPrimary = document.getElementById('previewTabPrimary');
+    const previewTabSecond = document.getElementById('previewTabSecond');
+    const previewFlow = document.getElementById('previewFlow');
+    const previewRankTitle = document.getElementById('previewRankTitle');
+    const previewRankList = document.getElementById('previewRankList');
+
+    const taskRows = `
+      <div class="rank-row">
+        <div class="rank-no">1</div>
+        <div><div class="rank-name">阿杰</div><div class="rank-sub">完成 42 个任务 · 连续活跃 7 天</div></div>
+        <div class="rank-score">2860</div>
+      </div>
+      <div class="rank-row">
+        <div class="rank-no">2</div>
+        <div><div class="rank-name">大橘</div><div class="rank-sub">完成 37 个任务 · 无畏主力</div></div>
+        <div class="rank-score">2510</div>
+      </div>
+      <div class="rank-row">
+        <div class="rank-no">8</div>
+        <div><div class="rank-name">我自己</div><div class="rank-sub">距离上一名还差 80 分</div></div>
+        <div class="rank-score">1620</div>
+      </div>`;
+
+    const eventRows = `
+      <div class="rank-row">
+        <div class="rank-no">1</div>
+        <div><div class="rank-name">天泽店一队</div><div class="rank-sub">冠军 2 次 · 前三 4 次</div></div>
+        <div class="rank-score">420</div>
+      </div>
+      <div class="rank-row">
+        <div class="rank-no">2</div>
+        <div><div class="rank-name">阿杰</div><div class="rank-sub">参赛 6 场 · 最佳名次冠军</div></div>
+        <div class="rank-score">360</div>
+      </div>
+      <div class="rank-row">
+        <div class="rank-no">5</div>
+        <div><div class="rank-name">我自己</div><div class="rank-sub">参赛 3 场 · 前三 1 次</div></div>
+        <div class="rank-score">180</div>
+      </div>`;
+
+    function updatePreview() {
+      previewTitle.textContent = clientTitleInput.value || rankName.value || '游戏排行榜';
+      previewDesc.textContent = clientDescInput.value || '完成活动即可参与排行榜，冲榜赢奖励。';
+      previewButton.textContent = clientButtonInput.value || '去参与活动';
+    }
+
+    function setType(type) {
+      document.body.dataset.rankType = type;
+      typeOptions.forEach((option) => option.classList.toggle('active', option.dataset.type === type));
+      if (type === 'task') {
+        rankName.value = '6月无畏契约任务积分月榜';
+        clientTitleInput.value = '无畏契约月度冲榜赛';
+        clientDescInput.value = '完成游戏任务获得积分，冲进排行榜前十即可获得网费和游戏礼包奖励。';
+        clientButtonInput.value = '去完成任务冲榜';
+        previewTabPrimary.textContent = '任务积分榜';
+        previewTabSecond.textContent = '我的排名';
+        previewRankTitle.textContent = '本月积分排行';
+        previewFlow.innerHTML = '<span><b>01</b>登录游戏</span><span><b>02</b>完成任务</span><span><b>03</b>获得积分</span><span><b>04</b>冲榜领奖</span>';
+        previewRankList.innerHTML = taskRows;
+      } else {
+        rankName.value = '6月赛事累计战绩榜';
+        clientTitleInput.value = '6月赛事累计战绩榜';
+        clientDescInput.value = '参与云顶和无畏赛事累计战绩积分，冠军、前三和完赛都会计入月度荣誉榜。';
+        clientButtonInput.value = '查看我的赛事战绩';
+        previewTabPrimary.textContent = '赛事战绩榜';
+        previewTabSecond.textContent = '我的荣誉';
+        previewRankTitle.textContent = '本月赛事战绩排行';
+        previewFlow.innerHTML = '<span><b>01</b>报名赛事</span><span><b>02</b>完成比赛</span><span><b>03</b>获得名次</span><span><b>04</b>沉淀荣誉</span>';
+        previewRankList.innerHTML = eventRows;
+      }
+      updatePreview();
+    }
+
+    typeOptions.forEach((option) => {
+      option.addEventListener('click', () => setType(option.dataset.type));
+    });
+
+    [rankName, clientTitleInput, clientDescInput, clientButtonInput, gameSelect].forEach((item) => {
+      item.addEventListener('input', updatePreview);
+      item.addEventListener('change', updatePreview);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1239 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>活动助手游戏排行榜需求可视化</title>
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --ink: #1f2635;
+      --muted: #697386;
+      --soft: #94a0b4;
+      --line: #dfe6f1;
+      --panel: #ffffff;
+      --blue: #2f73ff;
+      --blue-deep: #1f55d8;
+      --cyan: #42d5c8;
+      --green: #22b779;
+      --gold: #d3a95f;
+      --red: #f45b69;
+      --dark: #101827;
+      --shadow: 0 18px 44px rgba(31, 38, 53, 0.10);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1280px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(47, 115, 255, 0.16), transparent 25%),
+        radial-gradient(circle at 92% 4%, rgba(66, 213, 200, 0.14), transparent 25%),
+        linear-gradient(180deg, #f7faff 0%, var(--bg) 48%, #e9edf5 100%);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .project-top {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 66px;
+      padding: 12px 24px;
+      color: #fff;
+      background: linear-gradient(135deg, #111827, #202a3d);
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.22);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 300px;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(47, 115, 255, 0.28);
+    }
+
+    .brand b {
+      display: block;
+      font-size: 17px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 12px;
+    }
+
+    .page-switch {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      overflow-x: auto;
+    }
+
+    .switch-btn {
+      flex: 0 0 auto;
+      height: 36px;
+      padding: 0 14px;
+      color: rgba(255, 255, 255, 0.76);
+      background: transparent;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .switch-btn.active {
+      color: var(--blue-deep);
+      background: #fff;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.16);
+    }
+
+    .page-view {
+      display: none;
+      padding: 24px 28px 46px;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    .page {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .card,
+    .panel {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(223, 230, 241, 0.96);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero-main {
+      position: relative;
+      min-height: 212px;
+      padding: 26px 28px;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(47, 115, 255, 0.18), transparent 68%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 30px;
+      padding: 0 12px;
+      color: var(--blue-deep);
+      background: #eaf2ff;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 18px 0 0;
+      font-size: 36px;
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      max-width: 880px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero-side {
+      padding: 22px;
+    }
+
+    .hero-side h3,
+    .card h3,
+    .panel h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .hero-side p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      position: relative;
+      min-height: 112px;
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 10px 26px rgba(31, 38, 53, 0.06);
+      overflow: hidden;
+    }
+
+    .stat::after {
+      content: "";
+      position: absolute;
+      right: -28px;
+      top: -28px;
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      background: rgba(47, 115, 255, 0.08);
+    }
+
+    .stat label {
+      position: relative;
+      z-index: 1;
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat strong {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 10px;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      position: relative;
+      z-index: 1;
+      display: block;
+      margin-top: 8px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card,
+    .panel {
+      overflow: hidden;
+    }
+
+    .card-hd {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 17px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-hd p {
+      margin: 5px 0 0;
+      color: var(--soft);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .card-bd {
+      padding: 20px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      height: 27px;
+      padding: 0 10px;
+      color: var(--blue-deep);
+      background: #eaf2ff;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .pill.green {
+      color: #11875b;
+      background: #e9f8f2;
+    }
+
+    .pill.gold {
+      color: #8b631c;
+      background: #fff4dc;
+    }
+
+    .pill.red {
+      color: #c93a48;
+      background: #fff0f2;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 860px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      height: 44px;
+      padding: 0 14px;
+      color: #30384a;
+      background: #f7f9fc;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+      font-weight: 900;
+    }
+
+    td {
+      padding: 13px 14px;
+      color: #4c5568;
+      border-bottom: 1px solid #edf1f6;
+      line-height: 1.5;
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: #fbfdff;
+    }
+
+    .num {
+      color: #1f2635;
+      font-weight: 900;
+    }
+
+    .type-card {
+      position: relative;
+      min-height: 240px;
+      padding: 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(31, 38, 53, 0.07);
+      overflow: hidden;
+    }
+
+    .type-card.dark {
+      color: #fff;
+      background:
+        radial-gradient(circle at 88% 0%, rgba(66, 213, 200, 0.22), transparent 30%),
+        linear-gradient(145deg, #101827, #17233c);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .type-card h2 {
+      margin: 16px 0 10px;
+      font-size: 25px;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .type-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .type-card.dark p {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .points {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .point {
+      padding: 10px 12px;
+      color: #445066;
+      background: #f5f7fb;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .dark .point {
+      color: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .ranking-preview {
+      display: grid;
+      gap: 10px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 13px;
+      background: #f8faff;
+      border: 1px solid #edf2fb;
+      border-radius: 14px;
+    }
+
+    .rank-no {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      color: var(--blue-deep);
+      background: #eaf2ff;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+
+    .rank-row b {
+      display: block;
+      font-size: 14px;
+    }
+
+    .rank-row span {
+      display: block;
+      margin-top: 3px;
+      color: var(--soft);
+      font-size: 12px;
+    }
+
+    .score {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .client-wrap {
+      color: #eef3ff;
+      background:
+        radial-gradient(circle at 18% 10%, rgba(61, 124, 255, 0.24), transparent 24%),
+        radial-gradient(circle at 82% 0%, rgba(89, 229, 194, 0.14), transparent 22%),
+        linear-gradient(180deg, #0a1120 0%, #0d1527 60%, #121d32 100%);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 30px 76px rgba(0, 0, 0, 0.34);
+    }
+
+    .client-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .client-title b {
+      display: block;
+      font-size: 24px;
+    }
+
+    .client-title span {
+      display: block;
+      margin-top: 5px;
+      color: rgba(238, 243, 255, 0.62);
+      font-size: 13px;
+    }
+
+    .client-tabs {
+      display: inline-flex;
+      gap: 7px;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 999px;
+    }
+
+    .client-tabs span {
+      padding: 8px 13px;
+      color: rgba(238, 243, 255, 0.7);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .client-tabs .on {
+      color: #0a1120;
+      background: #fff;
+    }
+
+    .client-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 16px;
+    }
+
+    .client-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .client-card h3 {
+      color: #fff;
+    }
+
+    .dark-rank {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .dark-rank .rank-row {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .dark-rank .rank-row b {
+      color: #fff;
+    }
+
+    .dark-rank .rank-row span {
+      color: rgba(238, 243, 255, 0.58);
+    }
+
+    .dark-rank .score {
+      color: #fff;
+    }
+
+    .my-card {
+      background: linear-gradient(135deg, rgba(61, 124, 255, 0.28), rgba(89, 229, 194, 0.12));
+      border-color: rgba(101, 163, 255, 0.28);
+    }
+
+    .config-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .flow-step small {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 12px;
+      color: #fff;
+      background: var(--blue);
+      border-radius: 10px;
+      font-weight: 900;
+    }
+
+    .flow-step b {
+      display: block;
+      font-size: 14px;
+    }
+
+    .flow-step span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      padding: 13px;
+      background: #f8faff;
+      border: 1px solid #e8eef7;
+      border-radius: 13px;
+    }
+
+    .field label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field div {
+      margin-top: 8px;
+      color: #1f2635;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .rule-box {
+      padding: 15px 16px;
+      color: #4f5b70;
+      background: #fbfcff;
+      border: 1px dashed #d7dfec;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-item {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 14px;
+      padding: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+    }
+
+    .summary-item b {
+      color: #263149;
+    }
+
+    .summary-item span {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1360px) {
+      .hero,
+      .client-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats,
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .config-flow,
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="project-top">
+    <div class="brand">
+      <div class="brand-mark">榜</div>
+      <div>
+        <b>活动助手游戏排行榜需求可视化</b>
+        <span>任务积分榜 + 赛事成绩榜 / 赛事累计战绩榜</span>
+      </div>
+    </div>
+    <nav class="page-switch" aria-label="页面切换">
+      <button class="switch-btn active" type="button" data-view="summary">需求汇总</button>
+      <button class="switch-btn" type="button" data-view="center">排行榜中心</button>
+      <button class="switch-btn" type="button" data-view="player">用户看到的</button>
+      <button class="switch-btn" type="button" data-view="enterprise">企业/门店看到的</button>
+      <button class="switch-btn" type="button" data-view="config">后台配置</button>
+      <button class="switch-btn" type="button" data-view="rules">数据口径</button>
+    </nav>
+  </header>
+
+  <section id="summary" class="page-view active">
+    <main class="page">
+      <div class="hero">
+        <section class="hero-main">
+          <span class="eyebrow">需求汇总说明</span>
+          <h1>一个排行榜中心，承载两类榜单</h1>
+          <p class="lead">
+            这次需求不是单纯做一个积分榜，而是把活动助手里的“日常游戏任务”和“赛事成绩”统一沉淀到排行榜中心。任务积分榜解决玩家日常活跃，赛事排行榜解决赛事荣誉、获奖发放和长期参赛资产沉淀。
+          </p>
+        </section>
+        <aside class="hero-side">
+          <h3>产品定位</h3>
+          <p>任务积分榜看玩家持续做任务，赛事成绩榜看玩家/队伍比赛结果，赛事累计战绩榜看一段时间内的长期荣誉。</p>
+          <p><b>一句话：</b>日常榜拉活跃，赛事榜做荣誉，企业端看复盘，后台统一配置和结算。</p>
+        </aside>
+      </div>
+
+      <div class="grid-2">
+        <article class="type-card">
+          <span class="pill">日常游戏任务积分榜</span>
+          <h2>周/月/年任务积分排名</h2>
+          <p>玩家完成游戏任务后获得榜单积分，按周榜、月榜、年榜查看排名，用来拉动玩家持续完成任务、冲排名和领奖励。</p>
+          <div class="points">
+            <div class="point">核心对象：玩家个人。</div>
+            <div class="point">核心指标：总积分、完成任务数、最近完成时间、奖励状态。</div>
+            <div class="point">核心价值：让玩家有目标，让门店有日常运营抓手。</div>
+          </div>
+        </article>
+
+        <article class="type-card dark">
+          <span class="pill gold">赛事排行榜</span>
+          <h2>单场成绩单 + 累计战绩榜</h2>
+          <p>单场赛事已经有成绩单，在此基础上新增一段时间内的赛事累计战绩榜，沉淀玩家参赛次数、冠军次数、前三次数、赛事积分和获奖记录。</p>
+          <div class="points">
+            <div class="point">云顶：以玩家个人成绩为主。</div>
+            <div class="point">无畏：以队伍成绩为主，玩家继承队伍成绩。</div>
+            <div class="point">核心价值：把赛事从“办完即结束”变成长期荣誉体系。</div>
+          </div>
+        </article>
+      </div>
+
+      <section class="card">
+        <div class="card-hd">
+          <div>
+            <h3>汇总需求一览</h3>
+            <p>这一页专门把完整需求点写清楚，方便给开发、运营和业务评审。</p>
+          </div>
+          <span class="pill green">需求说明页</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>视角</th>
+                <th>任务积分榜</th>
+                <th>赛事排行榜</th>
+                <th>关键输出</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num">用户看到的</td>
+                <td>我的排名、我的积分、距上一名差距、可做任务、榜单奖励。</td>
+                <td>我的赛事成绩、参赛次数、最好名次、冠军次数、获奖记录。</td>
+                <td>冲榜目标、赛事荣誉、分享海报。</td>
+              </tr>
+              <tr>
+                <td class="num">企业看到的</td>
+                <td>企业下玩家积分排行、门店活跃排行、游戏任务表现、奖励发放。</td>
+                <td>赛事场次、参赛人次、门店成绩、核心赛事玩家、获奖复盘。</td>
+                <td>运营复盘、门店对比、资源投放。</td>
+              </tr>
+              <tr>
+                <td class="num">门店看到的</td>
+                <td>本店玩家周/月/年积分榜、本店活跃玩家、发奖名单。</td>
+                <td>本店赛事成绩、本店累计战绩、本店获奖玩家、群发海报。</td>
+                <td>门店运营、玩家维护、活动宣传。</td>
+              </tr>
+              <tr>
+                <td class="num">后台配置</td>
+                <td>配置任务范围、积分规则、统计周期、排名规则、奖励规则。</td>
+                <td>绑定赛事或时间范围，配置个人/队伍榜、名次积分、奖项和发奖方式。</td>
+                <td>统一创建、结算、导出、发奖。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <section id="center" class="page-view">
+    <main class="page">
+      <div class="hero">
+        <section class="hero-main">
+          <span class="eyebrow">排行榜中心</span>
+          <h1>统一入口，区分两类榜单</h1>
+          <p class="lead">排行榜中心负责管理所有榜单：任务积分榜、单场赛事成绩单、赛事累计战绩榜。运营从这里创建和查看，企业/门店从这里进入对应榜单详情。</p>
+        </section>
+        <aside class="hero-side">
+          <h3>建议入口</h3>
+          <p>活动助手管理后台：游戏任务 / 排行榜中心。</p>
+          <p>门店云平台：活动管理 / 游戏排行榜。</p>
+        </aside>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><label>进行中榜单</label><strong>12</strong><span>任务榜 8 个，赛事榜 4 个</span></div>
+        <div class="stat"><label>参与玩家数</label><strong>3,286</strong><span>本月去重玩家</span></div>
+        <div class="stat"><label>累计任务积分</label><strong>218,640</strong><span>按任务完成记录计算</span></div>
+        <div class="stat"><label>赛事参赛人次</label><strong>1,042</strong><span>云顶 + 无畏赛事</span></div>
+      </div>
+
+      <section class="card">
+        <div class="card-hd">
+          <div>
+            <h3>排行榜列表页</h3>
+            <p>默认按更新时间排序，支持榜单类型、游戏、状态、门店、时间范围筛选。</p>
+          </div>
+          <span class="pill">列表页</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>榜单名称</th>
+                <th>榜单类型</th>
+                <th>游戏</th>
+                <th>统计范围</th>
+                <th>周期</th>
+                <th>状态</th>
+                <th>更新时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num">6月无畏契约任务积分月榜</td>
+                <td><span class="pill">任务积分榜</span></td>
+                <td>无畏契约</td>
+                <td>企业全部门店</td>
+                <td>月榜</td>
+                <td><span class="pill green">进行中</span></td>
+                <td>2026-06-15 10:30</td>
+                <td>查看榜单 / 导出 / 结算</td>
+              </tr>
+              <tr>
+                <td class="num">6月赛事累计战绩榜</td>
+                <td><span class="pill gold">赛事累计战绩榜</span></td>
+                <td>云顶之弈、无畏契约</td>
+                <td>企业全部门店</td>
+                <td>本月</td>
+                <td><span class="pill green">进行中</span></td>
+                <td>2026-06-15 09:50</td>
+                <td>查看战绩 / 生成海报 / 导出</td>
+              </tr>
+              <tr>
+                <td class="num">周末无畏契约水友赛成绩单</td>
+                <td><span class="pill gold">单场赛事成绩单</span></td>
+                <td>无畏契约</td>
+                <td>天泽店</td>
+                <td>单场赛事</td>
+                <td><span class="pill">已结算</span></td>
+                <td>2026-06-14 22:10</td>
+                <td>查看成绩 / 发奖记录</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <section id="player" class="page-view">
+    <main class="page">
+      <div class="client-wrap">
+        <div class="client-top">
+          <div class="client-title">
+            <b>用户端看到的排行榜</b>
+            <span>玩家关心的是“我第几、差多少、还能怎么冲、拿到了什么荣誉”。</span>
+          </div>
+          <div class="client-tabs">
+            <span class="on">任务积分榜</span>
+            <span>赛事战绩榜</span>
+            <span>我的荣誉</span>
+          </div>
+        </div>
+
+        <div class="client-grid">
+          <section class="client-card">
+            <h3>本店任务积分月榜</h3>
+            <div class="dark-rank">
+              <div class="rank-row">
+                <div class="rank-no">1</div>
+                <div><b>阿杰</b><span>完成 42 个任务 · 连续活跃 7 天</span></div>
+                <div class="score">2,860</div>
+              </div>
+              <div class="rank-row">
+                <div class="rank-no">2</div>
+                <div><b>大橘</b><span>完成 37 个任务 · 无畏契约主力</span></div>
+                <div class="score">2,510</div>
+              </div>
+              <div class="rank-row my-card">
+                <div class="rank-no">8</div>
+                <div><b>我自己</b><span>距离上一名还差 80 分，再做 3 个任务可追上</span></div>
+                <div class="score">1,620</div>
+              </div>
+            </div>
+          </section>
+
+          <aside class="client-card">
+            <h3>我的赛事档案</h3>
+            <div class="points">
+              <div class="point">本月参赛 6 场，完赛 5 场。</div>
+              <div class="point">最好名次：无畏契约冠军队伍。</div>
+              <div class="point">冠军 1 次，前三 3 次，累计赛事积分 360。</div>
+              <div class="point">可生成“本月赛事战绩海报”。</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top:18px;">
+        <article class="card">
+          <div class="card-hd"><h3>任务积分榜用户需求</h3><span class="pill">日常冲榜</span></div>
+          <div class="card-bd">
+            <div class="summary-list">
+              <div class="summary-item"><b>我的排名</b><span>展示当前周期内玩家排名和积分。</span></div>
+              <div class="summary-item"><b>差距提醒</b><span>展示距上一名差多少分，引导继续做任务。</span></div>
+              <div class="summary-item"><b>可做任务</b><span>推荐还能完成哪些任务来提升积分。</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-hd"><h3>赛事榜用户需求</h3><span class="pill gold">荣誉沉淀</span></div>
+          <div class="card-bd">
+            <div class="summary-list">
+              <div class="summary-item"><b>单场成绩</b><span>查看某一场赛事名次、队伍成绩和奖励。</span></div>
+              <div class="summary-item"><b>累计战绩</b><span>查看一段时间内参赛、冠军、前三和赛事积分。</span></div>
+              <div class="summary-item"><b>荣誉分享</b><span>支持分享成绩单或月度战绩海报。</span></div>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-hd"><h3>用户端注意点</h3><span class="pill red">不要复杂</span></div>
+          <div class="card-bd">
+            <div class="rule-box">用户端不要展示复杂口径，只展示玩家能理解的排名、积分、奖励、差距和荣誉。复杂的并列规则、结算规则、异常处理放后台和说明里。</div>
+          </div>
+        </article>
+      </div>
+    </main>
+  </section>
+
+  <section id="enterprise" class="page-view">
+    <main class="page">
+      <div class="hero">
+        <section class="hero-main">
+          <span class="eyebrow">企业/门店看到的</span>
+          <h1>企业看复盘，门店看运营动作</h1>
+          <p class="lead">企业端重点看活动效果、门店对比、玩家资产和奖励消耗；门店端重点看本店排名、本店玩家、本店获奖和可以直接发出去的运营素材。</p>
+        </section>
+        <aside class="hero-side">
+          <h3>核心差异</h3>
+          <p>企业：跨门店对比和资源投放。</p>
+          <p>门店：本店玩家维护和活动宣传。</p>
+        </aside>
+      </div>
+
+      <div class="grid-2">
+        <section class="card">
+          <div class="card-hd">
+            <div><h3>企业视角看板</h3><p>用于老板、总部运营和我方运营做活动复盘。</p></div>
+            <span class="pill">企业端</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>模块</th>
+                  <th>任务积分榜</th>
+                  <th>赛事排行榜</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="num">总览</td><td>参与玩家数、完成任务数、总积分、发奖人数。</td><td>赛事场次、参赛人次、完赛率、获奖人数。</td></tr>
+                <tr><td class="num">门店对比</td><td>各门店玩家积分和任务完成情况。</td><td>各门店参赛人数、冠军次数、前三次数。</td></tr>
+                <tr><td class="num">核心玩家</td><td>高积分、高活跃、连续完成任务玩家。</td><td>高频参赛、成绩稳定、获奖次数多玩家。</td></tr>
+                <tr><td class="num">导出复盘</td><td>导出榜单、任务明细、奖励名单。</td><td>导出成绩单、累计战绩榜、赛事海报。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-hd">
+            <div><h3>门店视角看板</h3><p>用于门店老板和店长做本店运营。</p></div>
+            <span class="pill green">门店端</span>
+          </div>
+          <div class="ranking-preview card-bd">
+            <div class="rank-row"><div class="rank-no">1</div><div><b>本店任务积分榜</b><span>查看本店玩家周/月/年积分排名。</span></div><div class="score">查看</div></div>
+            <div class="rank-row"><div class="rank-no">2</div><div><b>本店赛事成绩</b><span>查看本店参赛玩家名次、队伍成绩和获奖情况。</span></div><div class="score">查看</div></div>
+            <div class="rank-row"><div class="rank-no">3</div><div><b>运营动作</b><span>一键导出名单、生成海报、提醒玩家冲榜。</span></div><div class="score">执行</div></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-hd">
+          <div><h3>企业/门店端字段需求</h3><p>字段需要服务复盘和运营，不要变成纯流水明细。</p></div>
+          <span class="pill">字段清单</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>榜单</th>
+                <th>主要字段</th>
+                <th>可操作项</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="num">任务积分榜</td>
+                <td>排名、玩家昵称、手机号、所属门店、游戏、总积分、完成任务数、最近完成时间、奖励状态。</td>
+                <td>查看详情、导出、发奖、提醒冲榜。</td>
+              </tr>
+              <tr>
+                <td class="num">单场赛事成绩单</td>
+                <td>赛事名称、游戏、参赛玩家/队伍、名次、成绩、奖项、奖励内容、发奖状态。</td>
+                <td>查看成绩、确认发奖、导出名单、生成海报。</td>
+              </tr>
+              <tr>
+                <td class="num">赛事累计战绩榜</td>
+                <td>玩家/队伍、所属门店、参赛次数、冠军次数、前三次数、最佳名次、获奖次数、赛事积分。</td>
+                <td>查看玩家档案、导出战绩、生成月度榜单海报。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <section id="config" class="page-view">
+    <main class="page">
+      <div class="hero">
+        <section class="hero-main">
+          <span class="eyebrow">后台配置</span>
+          <h1>先选榜单类型，再配置对应规则</h1>
+          <p class="lead">后台不建议做成一个复杂表单。第一步先选择榜单类型：任务积分榜、单场赛事成绩单、赛事累计战绩榜；后续字段根据类型动态变化。</p>
+        </section>
+        <aside class="hero-side">
+          <h3>MVP 配置原则</h3>
+          <p>第一版先保证能创建、查看、结算、导出。自动发奖、冲榜提醒、荣誉墙可以后置。</p>
+        </aside>
+      </div>
+
+      <div class="config-flow">
+        <div class="flow-step"><small>1</small><b>选择榜单类型</b><span>任务积分榜 / 单场成绩单 / 累计战绩榜。</span></div>
+        <div class="flow-step"><small>2</small><b>配置统计范围</b><span>企业、门店、游戏、时间周期。</span></div>
+        <div class="flow-step"><small>3</small><b>配置排名规则</b><span>积分、名次、赛事积分换算和并列规则。</span></div>
+        <div class="flow-step"><small>4</small><b>配置奖励规则</b><span>前N名、达标、冠军/亚军/季军等奖项。</span></div>
+        <div class="flow-step"><small>5</small><b>发布与结算</b><span>展示端、导出、发奖、海报。</span></div>
+      </div>
+
+      <div class="grid-2">
+        <section class="card">
+          <div class="card-hd"><h3>任务积分榜配置</h3><span class="pill">日常任务</span></div>
+          <div class="card-bd">
+            <div class="form-grid">
+              <div class="field"><label>榜单名称</label><div>6月无畏任务积分月榜</div></div>
+              <div class="field"><label>统计周期</label><div>周榜 / 月榜 / 年榜</div></div>
+              <div class="field"><label>适用游戏</label><div>全部游戏 / 指定游戏</div></div>
+              <div class="field"><label>计分任务</label><div>选择纳入榜单的任务</div></div>
+              <div class="field"><label>积分规则</label><div>每个任务对应积分</div></div>
+              <div class="field"><label>奖励规则</label><div>前N名 / 达标奖励</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-hd"><h3>赛事排行榜配置</h3><span class="pill gold">赛事成绩</span></div>
+          <div class="card-bd">
+            <div class="form-grid">
+              <div class="field"><label>赛事来源</label><div>绑定赛事 / 时间范围</div></div>
+              <div class="field"><label>游戏类型</label><div>云顶 / 无畏 / 全部</div></div>
+              <div class="field"><label>榜单对象</label><div>玩家榜 / 队伍榜</div></div>
+              <div class="field"><label>排名来源</label><div>系统成绩单 / 人工导入</div></div>
+              <div class="field"><label>积分换算</label><div>冠军100 / 亚军70 / 季军50</div></div>
+              <div class="field"><label>海报规则</label><div>冠军海报 / 月度战绩海报</div></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-hd"><h3>后台列表字段</h3><span class="pill green">统一管理</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>字段</th>
+                <th>说明</th>
+                <th>是否建议展示</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="num">榜单名称</td><td>运营自定义，列表和详情页主标题。</td><td>是</td></tr>
+              <tr><td class="num">榜单类型</td><td>任务积分榜 / 单场赛事成绩单 / 赛事累计战绩榜。</td><td>是</td></tr>
+              <tr><td class="num">游戏名称</td><td>全部游戏或指定游戏。</td><td>是</td></tr>
+              <tr><td class="num">统计周期</td><td>周/月/年/单场赛事/自定义时间。</td><td>是</td></tr>
+              <tr><td class="num">榜单状态</td><td>草稿、进行中、已结束、已结算。</td><td>是</td></tr>
+              <tr><td class="num">操作</td><td>查看、编辑、复制、下线、导出、结算。</td><td>是</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <section id="rules" class="page-view">
+    <main class="page">
+      <div class="hero">
+        <section class="hero-main">
+          <span class="eyebrow">数据口径 & MVP</span>
+          <h1>两套榜单，两套口径，不能混算</h1>
+          <p class="lead">任务积分来自任务完成记录，赛事积分来自赛事成绩单。任务榜按周/月/年滚动，赛事榜按单场或时间范围累计。口径分清楚，后续发奖和复盘才不会乱。</p>
+        </section>
+        <aside class="hero-side">
+          <h3>关键原则</h3>
+          <p>任务积分榜看“做任务”，赛事排行榜看“比赛成绩”。同一个玩家可以同时存在于两类榜单，但积分来源必须分开。</p>
+        </aside>
+      </div>
+
+      <div class="grid-2">
+        <section class="card">
+          <div class="card-hd"><h3>任务积分榜口径</h3><span class="pill">任务数据</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>指标</th>
+                  <th>口径</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="num">任务积分</td><td>玩家完成游戏任务后获得的榜单积分。</td></tr>
+                <tr><td class="num">总积分</td><td>统计周期内任务积分累计。</td></tr>
+                <tr><td class="num">完成任务数</td><td>周期内成功完成任务次数。</td></tr>
+                <tr><td class="num">周榜</td><td>自然周，周一 00:00 到周日 23:59。</td></tr>
+                <tr><td class="num">排名</td><td>按总积分倒序，同分按完成任务数或达成时间排序。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-hd"><h3>赛事排行榜口径</h3><span class="pill gold">赛事成绩</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>指标</th>
+                  <th>口径</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="num">单场名次</td><td>某一场赛事结束后的最终成绩。</td></tr>
+                <tr><td class="num">赛事积分</td><td>冠军、亚军、季军、前八、完赛等成绩换算积分。</td></tr>
+                <tr><td class="num">参赛次数</td><td>时间范围内玩家或队伍参与赛事次数。</td></tr>
+                <tr><td class="num">无畏玩家成绩</td><td>第一版建议玩家继承所在队伍的赛事成绩。</td></tr>
+                <tr><td class="num">排名</td><td>按赛事积分倒序，同分按冠军次数、前三次数、最近参赛排序。</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-hd"><h3>MVP 优先级</h3><span class="pill green">建议第一版</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>优先级</th>
+                <th>功能</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="num">P0</td><td>排行榜列表页</td><td>区分任务积分榜和赛事排行榜。</td></tr>
+              <tr><td class="num">P0</td><td>任务积分榜详情</td><td>支持周/月/年切换，展示玩家积分排名。</td></tr>
+              <tr><td class="num">P0</td><td>单场赛事成绩单</td><td>读取已有赛事成绩，展示名次和发奖状态。</td></tr>
+              <tr><td class="num">P0</td><td>赛事累计战绩榜</td><td>按时间范围汇总参赛、冠军、前三、赛事积分。</td></tr>
+              <tr><td class="num">P1</td><td>玩家端我的排名和赛事档案</td><td>让玩家看到冲榜目标和长期荣誉。</td></tr>
+              <tr><td class="num">P1</td><td>导出和海报</td><td>支撑门店复盘、群传播和业务汇报。</td></tr>
+              <tr><td class="num">P2</td><td>自动发奖、冲榜提醒、荣誉墙</td><td>作为后续增强能力。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <script>
+    const buttons = Array.from(document.querySelectorAll('.switch-btn[data-view]'));
+    const views = Array.from(document.querySelectorAll('.page-view[id]'));
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.view;
+        buttons.forEach((item) => item.classList.toggle('active', item === button));
+        views.forEach((view) => view.classList.toggle('active', view.id === target));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

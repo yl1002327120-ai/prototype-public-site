@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>活动助手游戏任务复盘</title>
+  <style>
+    :root {
+      --bg: #f3f5f8;
+      --nav: #0e1224;
+      --side: #ffffff;
+      --card: #ffffff;
+      --text: #1e2533;
+      --muted: #6f7787;
+      --subtle: #9aa3b2;
+      --line: #e6e9ef;
+      --blue: #2f73ff;
+      --blue-2: #eaf2ff;
+      --green: #18a66a;
+      --orange: #ff9f2f;
+      --red: #f45b69;
+      --purple: #7567f8;
+      --yellow: #fff45e;
+      --shadow: 0 14px 36px rgba(30, 37, 51, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1280px;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      color: #fff;
+      background: var(--nav);
+      box-shadow: 0 8px 24px rgba(14, 18, 36, 0.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      width: 210px;
+      height: 56px;
+      padding: 0 22px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      margin-right: 9px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #2f73ff, #18d2ff);
+      box-shadow: 0 8px 18px rgba(47, 115, 255, 0.36);
+    }
+
+    .nav-tabs {
+      display: flex;
+      height: 56px;
+    }
+
+    .nav-tabs a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 24px;
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .nav-tabs a.active {
+      color: #fff;
+      background: #1f65ff;
+      font-weight: 700;
+    }
+
+    .account {
+      margin-left: auto;
+      padding-right: 28px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+    }
+
+    .account a {
+      margin-left: 10px;
+      color: #65a3ff;
+      text-decoration: none;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 176px minmax(0, 1fr);
+      min-height: calc(100vh - 56px);
+    }
+
+    .sidebar {
+      padding: 16px 0;
+      background: var(--side);
+      border-right: 1px solid var(--line);
+    }
+
+    .side-title {
+      padding: 11px 24px;
+      color: #2e3545;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .side-link {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding: 0 24px;
+      color: #596172;
+      text-decoration: none;
+      font-size: 14px;
+      border-left: 3px solid transparent;
+    }
+
+    .side-link.active {
+      color: var(--blue);
+      background: #edf5ff;
+      border-left-color: var(--blue);
+      font-weight: 700;
+    }
+
+    .main {
+      padding: 22px 24px 42px;
+      overflow: hidden;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+      padding: 22px 24px;
+      background:
+        radial-gradient(circle at 90% 16%, rgba(47, 115, 255, 0.16), transparent 26%),
+        linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .page-head h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.25;
+    }
+
+    .page-head p {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .head-actions {
+      display: flex;
+      gap: 10px;
+      white-space: nowrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 36px;
+      padding: 0 15px;
+      color: #fff;
+      background: var(--blue);
+      border: 1px solid var(--blue);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 10px 22px rgba(47, 115, 255, 0.18);
+    }
+
+    .btn.secondary {
+      color: #3b4354;
+      background: #fff;
+      border-color: var(--line);
+      box-shadow: none;
+    }
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding: 14px 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .field select,
+    .field input {
+      height: 34px;
+      min-width: 138px;
+      padding: 0 12px;
+      color: #2f3544;
+      background: #fff;
+      border: 1px solid #dfe3ea;
+      border-radius: 9px;
+      outline: none;
+    }
+
+    .quick {
+      display: inline-flex;
+      gap: 4px;
+      padding: 3px;
+      background: #f3f6fb;
+      border-radius: 10px;
+    }
+
+    .quick button {
+      height: 28px;
+      padding: 0 10px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .quick button.active {
+      color: var(--blue);
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(47, 115, 255, 0.1);
+      font-weight: 800;
+    }
+
+    .report-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 6px;
+      background: #e9edf5;
+      border-radius: 14px;
+      overflow-x: auto;
+    }
+
+    .report-tabs button {
+      flex: 0 0 auto;
+      height: 36px;
+      padding: 0 16px;
+      color: #556071;
+      background: transparent;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .report-tabs button.active {
+      color: var(--blue);
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(47, 115, 255, 0.1);
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card {
+      position: relative;
+      min-height: 112px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 24px rgba(30, 37, 51, 0.05);
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -24px;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(47, 115, 255, 0.08);
+    }
+
+    .stat-label {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat-value {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-tip {
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      color: var(--subtle);
+      font-size: 12px;
+    }
+
+    .up {
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .down {
+      color: var(--red);
+      font-weight: 800;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(360px, 0.8fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 24px rgba(30, 37, 51, 0.05);
+      overflow: hidden;
+    }
+
+    .card-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 56px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-hd h2 {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .card-hd p {
+      margin: 4px 0 0;
+      color: var(--subtle);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      color: var(--blue);
+      background: var(--blue-2);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .card-bd {
+      padding: 18px;
+    }
+
+    .trend {
+      height: 260px;
+      padding: 12px 8px 2px;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 14px;
+      height: 195px;
+      padding: 0 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      position: relative;
+      flex: 1;
+      min-width: 26px;
+      border-radius: 10px 10px 0 0;
+      background: linear-gradient(180deg, #2f73ff, #85b2ff);
+      box-shadow: 0 10px 18px rgba(47, 115, 255, 0.18);
+    }
+
+    .bar.claim {
+      background: linear-gradient(180deg, #18a66a, #7ce0b5);
+      box-shadow: 0 10px 18px rgba(24, 166, 106, 0.16);
+    }
+
+    .bar span {
+      position: absolute;
+      left: 50%;
+      top: -22px;
+      transform: translateX(-50%);
+      color: #485064;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .axis {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 14px;
+      padding: 10px 8px 0;
+      color: var(--subtle);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend i {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .legend .green i {
+      background: var(--green);
+    }
+
+    .rank-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rank-item {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rank-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      color: var(--blue);
+      background: var(--blue-2);
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .rank-name {
+      color: #2f3544;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .rank-meta {
+      margin-top: 6px;
+      background: #edf1f8;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rank-meta span {
+      display: block;
+      height: 7px;
+      background: linear-gradient(90deg, #2f73ff, #18d2ff);
+      border-radius: 999px;
+    }
+
+    .rank-num {
+      color: #1e2533;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 880px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      height: 44px;
+      padding: 0 14px;
+      color: #2f3544;
+      background: #f7f8fb;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+      font-weight: 900;
+    }
+
+    td {
+      min-height: 48px;
+      padding: 13px 14px;
+      color: #4d5565;
+      border-bottom: 1px solid #eef1f5;
+      vertical-align: middle;
+      line-height: 1.5;
+    }
+
+    tr:hover td {
+      background: #fbfdff;
+    }
+
+    .num {
+      color: #1e2533;
+      font-weight: 900;
+    }
+
+    .highlight {
+      background: var(--yellow) !important;
+      color: #111827;
+      font-weight: 900;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      color: #536079;
+      background: #f1f4f8;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag.blue {
+      color: var(--blue);
+      background: var(--blue-2);
+    }
+
+    .tag.green {
+      color: var(--green);
+      background: #eaf8f1;
+    }
+
+    .tag.orange {
+      color: #d07000;
+      background: #fff4e5;
+    }
+
+    .tag.red {
+      color: var(--red);
+      background: #fff0f2;
+    }
+
+    .wide-table {
+      min-width: 1480px;
+    }
+
+    .sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: inherit;
+    }
+
+    th.sticky-col {
+      background: #f7f8fb;
+    }
+
+    .store-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+    }
+
+    .store-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .store-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 52px;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .store-item.active {
+      border-color: rgba(47, 115, 255, 0.38);
+      background: #f6f9ff;
+      box-shadow: 0 10px 20px rgba(47, 115, 255, 0.08);
+    }
+
+    .store-item b {
+      display: block;
+      color: #303747;
+      font-size: 13px;
+    }
+
+    .store-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--subtle);
+      font-size: 12px;
+    }
+
+    .store-item strong {
+      color: var(--blue);
+      font-size: 16px;
+    }
+
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .reward-card {
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(30, 37, 51, 0.04);
+    }
+
+    .reward-card b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .reward-card strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -0.02em;
+    }
+
+    .reward-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--subtle);
+      font-size: 12px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .progress-line {
+      display: grid;
+      grid-template-columns: 110px 1fr 64px;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .track {
+      height: 12px;
+      background: #edf1f7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .track span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2f73ff, #18d2ff);
+    }
+
+    .rule-box {
+      padding: 15px 18px;
+      color: #4f596b;
+      background: #fbfcff;
+      border: 1px dashed #d8deea;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .rule-box b {
+      color: #2f3544;
+    }
+
+    .empty-tip {
+      padding: 28px;
+      color: var(--subtle);
+      text-align: center;
+      background: #fbfcff;
+      border: 1px dashed #dfe4ec;
+      border-radius: 14px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1360px) {
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid-2,
+      .store-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .reward-grid,
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><i class="brand-mark"></i>活动助手云平台</div>
+    <nav class="nav-tabs">
+      <a href="#">首页</a>
+      <a href="#" class="active">游戏赛事</a>
+      <a href="#">奖励兑换</a>
+      <a href="#">活动管理</a>
+      <a href="#">员工管理</a>
+      <a href="#">系统设置</a>
+    </nav>
+    <div class="account">阳天一网盟实业有 <a href="#">退出</a></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-title">首页</div>
+      <a class="side-link" href="#">概况数据总览</a>
+      <a class="side-link active" href="#">游戏任务复盘</a>
+      <a class="side-link" href="#">游戏任务统计</a>
+      <div class="side-title">任务数据</div>
+      <a class="side-link" href="#">完成记录</a>
+      <a class="side-link" href="#">奖励记录</a>
+      <a class="side-link" href="#">兑换记录</a>
+    </aside>
+
+    <main class="main">
+      <section class="page-head">
+        <div>
+          <h1>游戏任务复盘</h1>
+          <p>把完成记录、任务统计和奖励发放数据聚合到一张复盘看板里，运营可以按企业、游戏、门店、奖励类型快速查看活动效果，也可以直接导出给门店老板做活动复盘。</p>
+        </div>
+        <div class="head-actions">
+          <button class="btn secondary" type="button" onclick="window.print()">导出当前页</button>
+          <button class="btn" type="button">下载复盘表</button>
+        </div>
+      </section>
+
+      <section class="filters">
+        <div class="field">
+          数据时间
+          <input type="text" value="2026-04-15 至 2026-04-21">
+        </div>
+        <div class="quick" aria-label="快捷时间">
+          <button type="button">昨天</button>
+          <button type="button" class="active">近7日</button>
+          <button type="button">近30日</button>
+        </div>
+        <div class="field">
+          企业
+          <select>
+            <option>阳天一网盟实业有</option>
+          </select>
+        </div>
+        <div class="field">
+          门店
+          <select>
+            <option>全部门店</option>
+            <option>天一网盟天泽店</option>
+            <option>天一网盟天启店</option>
+            <option>天一网盟天诚店</option>
+          </select>
+        </div>
+        <div class="field">
+          游戏
+          <select>
+            <option>全部游戏</option>
+            <option>三角洲行动</option>
+            <option>无畏契约</option>
+            <option>绝地求生</option>
+          </select>
+        </div>
+        <div class="field">
+          奖励类型
+          <select>
+            <option>全部奖励</option>
+            <option>网费</option>
+            <option>游戏道具</option>
+            <option>优惠券</option>
+            <option>兑换码</option>
+          </select>
+        </div>
+      </section>
+
+      <nav class="report-tabs" aria-label="报表切换">
+        <button class="active" type="button" data-panel="overview">企业总览</button>
+        <button type="button" data-panel="game">游戏完成情况</button>
+        <button type="button" data-panel="store">门店游戏明细</button>
+        <button type="button" data-panel="reward">企业奖励发放</button>
+        <button type="button" data-panel="storeReward">门店奖励统计</button>
+        <button type="button" data-panel="record">完成记录下钻</button>
+      </nav>
+
+      <section id="overview" class="panel active">
+        <div class="stats">
+          <article class="stat-card">
+            <div class="stat-label">完成任务数</div>
+            <div class="stat-value">16,850</div>
+            <div class="stat-tip">近7日任务完成记录汇总</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">奖励领取数</div>
+            <div class="stat-value">13,061</div>
+            <div class="stat-tip"><span class="up">77.5%</span> 领取率</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">奖励兑换数</div>
+            <div class="stat-value">10,271</div>
+            <div class="stat-tip"><span class="up">78.6%</span> 兑换率</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">参与门店数</div>
+            <div class="stat-value">20</div>
+            <div class="stat-tip">有任务完成记录的门店</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">参与游戏数</div>
+            <div class="stat-value">14</div>
+            <div class="stat-tip">覆盖腾讯及其他游戏任务</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-label">消耗最多奖励</div>
+            <div class="stat-value">网费</div>
+            <div class="stat-tip">本周期发放占比 46%</div>
+          </article>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>每日任务完成趋势</h2>
+                <p>看活动热度是否集中爆发，方便运营判断活动节奏。</p>
+              </div>
+              <span class="badge">近7日</span>
+            </div>
+            <div class="card-bd">
+              <div class="trend">
+                <div class="bars">
+                  <div class="bar" style="height: 52%"><span>1,820</span></div>
+                  <div class="bar claim" style="height: 41%"><span>1,466</span></div>
+                  <div class="bar" style="height: 68%"><span>2,368</span></div>
+                  <div class="bar claim" style="height: 54%"><span>1,930</span></div>
+                  <div class="bar" style="height: 88%"><span>3,084</span></div>
+                  <div class="bar claim" style="height: 72%"><span>2,487</span></div>
+                  <div class="bar" style="height: 76%"><span>2,614</span></div>
+                </div>
+                <div class="axis"><span>4/15</span><span>4/16</span><span>4/17</span><span>4/18</span><span>4/19</span><span>4/20</span><span>4/21</span></div>
+                <div class="legend"><span><i></i>完成任务数</span><span class="green"><i></i>奖励领取数</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <div>
+                <h2>游戏完成排行</h2>
+                <p>按完成任务数排序，快速判断重点游戏。</p>
+              </div>
+              <span class="badge">TOP 5</span>
+            </div>
+            <div class="card-bd">
+              <div class="rank-list">
+                <div class="rank-item">
+                  <span class="rank-no">1</span>
+                  <div><div class="rank-name">三角洲行动</div><div class="rank-meta"><span style="width: 100%"></span></div></div>
+                  <div class="rank-num">12,734</div>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-no">2</span>
+                  <div><div class="rank-name">无畏契约</div><div class="rank-meta"><span style="width: 52%"></span></div></div>
+                  <div class="rank-num">1,022</div>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-no">3</span>
+                  <div><div class="rank-name">绝地求生</div><div class="rank-meta"><span style="width: 44%"></span></div></div>
+                  <div class="rank-num">854</div>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-no">4</span>
+                  <div><div class="rank-name">英雄联盟</div><div class="rank-meta"><span style="width: 35%"></span></div></div>
+                  <div class="rank-num">430</div>
+                </div>
+                <div class="rank-item">
+                  <span class="rank-no">5</span>
+                  <div><div class="rank-name">游戏未来</div><div class="rank-meta"><span style="width: 30%"></span></div></div>
+                  <div class="rank-num">355</div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-hd"><h2>门店执行差异</h2><span class="badge">看排名</span></div>
+            <div class="card-bd">
+              <div class="progress-line"><span>天泽店</span><div class="track"><span style="width: 100%"></span></div><b>1,925</b></div>
+              <div class="progress-line"><span>天启店</span><div class="track"><span style="width: 99%"></span></div><b>1,916</b></div>
+              <div class="progress-line"><span>天诚店</span><div class="track"><span style="width: 90%"></span></div><b>1,741</b></div>
+              <div class="progress-line"><span>天锐店</span><div class="track"><span style="width: 87%"></span></div><b>1,677</b></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-hd"><h2>奖励类型占比</h2><span class="badge">看消耗</span></div>
+            <div class="card-bd">
+              <div class="progress-line"><span>网费</span><div class="track"><span style="width: 92%"></span></div><b>46%</b></div>
+              <div class="progress-line"><span>游戏道具</span><div class="track"><span style="width: 64%"></span></div><b>32%</b></div>
+              <div class="progress-line"><span>兑换码</span><div class="track"><span style="width: 28%"></span></div><b>14%</b></div>
+              <div class="progress-line"><span>优惠券</span><div class="track"><span style="width: 16%"></span></div><b>8%</b></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-hd"><h2>复盘建议</h2><span class="badge">运营视角</span></div>
+            <div class="card-bd">
+              <div class="rule-box">
+                <b>建议关注：</b>三角洲行动贡献明显高于其他游戏，可作为本期主推游戏；低领取率门店需要单独看奖励库存、员工引导和门店活动物料是否到位。
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="game" class="panel">
+        <article class="card">
+          <div class="card-hd">
+            <div>
+              <h2>企业下每个游戏的完成情况</h2>
+              <p>按游戏聚合任务数据，用于判断哪些游戏适合继续投入活动资源。</p>
+            </div>
+            <span class="badge">支持导出</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>游戏名称</th>
+                  <th>完成任务数</th>
+                  <th>领取任务数</th>
+                  <th>兑换奖励数</th>
+                  <th>参与门店数</th>
+                  <th>领取率</th>
+                  <th>兑换率</th>
+                  <th>主要奖励类型</th>
+                  <th>运营判断</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>三角洲行动</td><td class="num">12,734</td><td class="num">10,281</td><td class="num">10,271</td><td>20</td><td>80.7%</td><td>99.9%</td><td><span class="tag blue">道具</span> <span class="tag green">网费</span></td><td>主推游戏，活动贡献最高</td></tr>
+                <tr><td>无畏契约</td><td class="num">1,022</td><td class="num">735</td><td class="num">735</td><td>20</td><td>71.9%</td><td>100%</td><td><span class="tag green">网费</span></td><td>适合做门店周榜活动</td></tr>
+                <tr><td>绝地求生</td><td class="num">854</td><td class="num">522</td><td class="num">522</td><td>18</td><td>61.1%</td><td>100%</td><td><span class="tag blue">道具</span></td><td>奖励吸引力需继续观察</td></tr>
+                <tr><td>英雄联盟</td><td class="num">430</td><td class="num">408</td><td class="num">408</td><td>16</td><td>94.9%</td><td>100%</td><td><span class="tag orange">兑换码</span></td><td>领取率高，适合小额奖励</td></tr>
+                <tr><td>游戏未来</td><td class="num">355</td><td class="num">154</td><td class="num">154</td><td>12</td><td>43.4%</td><td>100%</td><td><span class="tag blue">道具</span></td><td>完成到领取转化偏低</td></tr>
+                <tr><td>洛克王国：世界</td><td class="num">266</td><td class="num">169</td><td class="num">169</td><td>12</td><td>63.5%</td><td>100%</td><td><span class="tag blue">道具</span></td><td>可继续观察新增活动</td></tr>
+                <tr><td>FC Online</td><td class="num">262</td><td class="num">204</td><td class="num">204</td><td>10</td><td>77.9%</td><td>100%</td><td><span class="tag orange">兑换码</span></td><td>稳定，但规模有限</td></tr>
+                <tr><td>王者荣耀世界</td><td class="num">227</td><td class="num">128</td><td class="num">128</td><td>9</td><td>56.4%</td><td>100%</td><td><span class="tag blue">道具</span></td><td>建议优化任务曝光</td></tr>
+                <tr><td>和平精英</td><td class="num">191</td><td class="num">78</td><td class="num">52</td><td>8</td><td>40.8%</td><td>66.7%</td><td><span class="tag orange">兑换码</span></td><td>兑换链路需排查</td></tr>
+                <tr><td>反恐精英</td><td class="num">155</td><td class="num">121</td><td class="num">121</td><td>7</td><td>78.1%</td><td>100%</td><td><span class="tag blue">道具</span></td><td>可作为补充游戏</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="store" class="panel">
+        <article class="card">
+          <div class="card-hd">
+            <div>
+              <h2>企业下各门店各游戏完成明细</h2>
+              <p>保留运营 Excel 复盘习惯，横向展示各游戏完成数，并突出完成数汇总和领取数汇总。</p>
+            </div>
+            <span class="badge">横向滚动查看</span>
+          </div>
+          <div class="table-scroll">
+            <table class="wide-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col">网吧 gid</th>
+                  <th>门店名称</th>
+                  <th>英雄联盟完成数</th>
+                  <th>无畏契约完成数</th>
+                  <th>三角洲行动完成数</th>
+                  <th>永劫无间完成数</th>
+                  <th>绝地求生完成数</th>
+                  <th>和平精英完成数</th>
+                  <th>地下城与勇士完成数</th>
+                  <th class="highlight">完成数汇总</th>
+                  <th class="highlight">领取数汇总</th>
+                  <th>查看</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="sticky-col">90010082</td><td>天一网盟天泽店</td><td>54</td><td>113</td><td>1,338</td><td>13</td><td>170</td><td>0</td><td>5</td><td class="highlight">1,925</td><td class="highlight">1,488</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010081</td><td>天一网盟天启店</td><td>72</td><td>163</td><td>1,243</td><td>19</td><td>170</td><td>15</td><td>6</td><td class="highlight">1,916</td><td class="highlight">1,468</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010080</td><td>天一网盟天诚店</td><td>90</td><td>176</td><td>995</td><td>24</td><td>150</td><td>18</td><td>14</td><td class="highlight">1,741</td><td class="highlight">1,347</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010078</td><td>天一网盟天锐店</td><td>27</td><td>125</td><td>1,247</td><td>1</td><td>166</td><td>0</td><td>3</td><td class="highlight">1,677</td><td class="highlight">1,285</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010079</td><td>天一网盟天乐店</td><td>33</td><td>84</td><td>639</td><td>21</td><td>99</td><td>8</td><td>6</td><td class="highlight">1,003</td><td class="highlight">794</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010347</td><td>天一网盟星动店</td><td>14</td><td>45</td><td>893</td><td>0</td><td>13</td><td>21</td><td>2</td><td class="highlight">992</td><td class="highlight">822</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010351</td><td>天一网盟天宏店</td><td>13</td><td>81</td><td>648</td><td>9</td><td>24</td><td>23</td><td>2</td><td class="highlight">832</td><td class="highlight">639</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+                <tr><td class="sticky-col">90010350</td><td>天一网盟富东店</td><td>20</td><td>25</td><td>663</td><td>4</td><td>0</td><td>22</td><td>0</td><td class="highlight">764</td><td class="highlight">600</td><td><span class="tag blue">门店奖励统计</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="reward" class="panel">
+        <div class="reward-grid">
+          <article class="reward-card"><b>网费奖励</b><strong>6,008</strong><span>占全部发放 46%，门店感知最直接</span></article>
+          <article class="reward-card"><b>游戏道具</b><strong>4,176</strong><span>以三角洲、PUBG、王者相关道具为主</span></article>
+          <article class="reward-card"><b>兑换码</b><strong>1,827</strong><span>适合跨游戏发放，兑换状态需追踪</span></article>
+          <article class="reward-card"><b>优惠券/其他</b><strong>1,050</strong><span>用于饮品、上机、门店活动补充</span></article>
+        </div>
+        <article class="card">
+          <div class="card-hd">
+            <div>
+              <h2>企业下各类奖励发放情况</h2>
+              <p>看企业本期整体消耗了哪些奖励资源，以及这些奖励主要被哪些游戏带动。</p>
+            </div>
+            <span class="badge">按奖励类型聚合</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>奖励类型</th>
+                  <th>奖励名称</th>
+                  <th>发放数量</th>
+                  <th>领取数量</th>
+                  <th>兑换数量</th>
+                  <th>关联游戏</th>
+                  <th>关联门店数</th>
+                  <th>占比</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="tag green">网费</span></td><td>电竞蜂10元网费</td><td class="num">3,960</td><td>3,480</td><td>3,120</td><td>三角洲行动、无畏契约</td><td>20</td><td>30.3%</td></tr>
+                <tr><td><span class="tag blue">游戏道具</span></td><td>三角洲道具礼包</td><td class="num">3,244</td><td>3,238</td><td>3,238</td><td>三角洲行动</td><td>20</td><td>24.8%</td></tr>
+                <tr><td><span class="tag orange">兑换码</span></td><td>英雄联盟 / FC Online 兑换码</td><td class="num">1,827</td><td>1,678</td><td>1,550</td><td>英雄联盟、FC Online</td><td>18</td><td>14.0%</td></tr>
+                <tr><td><span class="tag green">网费</span></td><td>普通5元网费券</td><td class="num">2,048</td><td>1,860</td><td>1,520</td><td>无畏契约、绝地求生</td><td>19</td><td>15.7%</td></tr>
+                <tr><td><span class="tag blue">游戏道具</span></td><td>PUBG 活动通行证 / 鸡腿套装</td><td class="num">932</td><td>522</td><td>522</td><td>绝地求生</td><td>18</td><td>7.1%</td></tr>
+                <tr><td><span class="tag">其他</span></td><td>门店饮品券 / 临时补充奖励</td><td class="num">1,050</td><td>828</td><td>601</td><td>多游戏</td><td>12</td><td>8.0%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="storeReward" class="panel">
+        <div class="store-layout">
+          <div>
+            <div class="stats">
+              <article class="stat-card">
+                <div class="stat-label">当前门店</div>
+                <div class="stat-value" style="font-size: 22px;">天泽店</div>
+                <div class="stat-tip">天一网盟天泽店</div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-label">本店奖励发放总数</div>
+                <div class="stat-value">1,488</div>
+                <div class="stat-tip">已成功发放奖励数量</div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-label">本店奖励兑换数</div>
+                <div class="stat-value">1,108</div>
+                <div class="stat-tip">已核销/已兑换数量</div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-label">奖励类型数</div>
+                <div class="stat-value">4</div>
+                <div class="stat-tip">网费、道具、兑换码、其他</div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-label">消耗最多奖励</div>
+                <div class="stat-value">网费</div>
+                <div class="stat-tip">本店占比 49%</div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-label">关联游戏数</div>
+                <div class="stat-value">8</div>
+                <div class="stat-tip">产生奖励发放的游戏</div>
+              </article>
+            </div>
+
+            <article class="card" style="margin-bottom:16px;">
+              <div class="card-hd">
+                <div>
+                  <h2>单门店奖励类型统计</h2>
+                  <p>站在某一家门店角度，看这家店发出去了哪些奖励、发了多少、主要被哪些游戏消耗。</p>
+                </div>
+                <span class="badge">你补充的页面</span>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>奖励类型</th>
+                      <th>奖励名称</th>
+                      <th>发放数量</th>
+                      <th>领取数量</th>
+                      <th>兑换数量</th>
+                      <th>关联游戏</th>
+                      <th>关联任务数</th>
+                      <th>占比</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="tag green">网费</span></td><td>电竞蜂10元网费</td><td class="num">538</td><td>492</td><td>421</td><td>三角洲行动、无畏契约</td><td>5</td><td>36.2%</td></tr>
+                    <tr><td><span class="tag blue">游戏道具</span></td><td>三角洲道具礼包</td><td class="num">368</td><td>366</td><td>366</td><td>三角洲行动</td><td>2</td><td>24.7%</td></tr>
+                    <tr><td><span class="tag orange">兑换码</span></td><td>英雄联盟 / FC Online 兑换码</td><td class="num">212</td><td>190</td><td>168</td><td>英雄联盟、FC Online</td><td>3</td><td>14.2%</td></tr>
+                    <tr><td><span class="tag green">网费</span></td><td>普通5元网费券</td><td class="num">192</td><td>173</td><td>124</td><td>无畏契约、绝地求生</td><td>3</td><td>12.9%</td></tr>
+                    <tr><td><span class="tag">其他</span></td><td>门店饮品券 / 临时补充奖励</td><td class="num">178</td><td>142</td><td>49</td><td>多游戏</td><td>4</td><td>12.0%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <div class="grid-2">
+              <article class="card">
+                <div class="card-hd"><h2>本店各游戏奖励消耗</h2><span class="badge">按游戏拆分</span></div>
+                <div class="card-bd stack">
+                  <div class="progress-line"><span>三角洲行动</span><div class="track"><span style="width: 100%"></span></div><b>982</b></div>
+                  <div class="progress-line"><span>无畏契约</span><div class="track"><span style="width: 36%"></span></div><b>352</b></div>
+                  <div class="progress-line"><span>绝地求生</span><div class="track"><span style="width: 18%"></span></div><b>178</b></div>
+                  <div class="progress-line"><span>英雄联盟</span><div class="track"><span style="width: 12%"></span></div><b>118</b></div>
+                </div>
+              </article>
+              <article class="card">
+                <div class="card-hd"><h2>本店复盘提示</h2><span class="badge">老板可读</span></div>
+                <div class="card-bd">
+                  <div class="rule-box">
+                    <b>本店特点：</b>奖励消耗集中在三角洲行动和网费奖励，说明该店本期活动主要靠高频游戏任务拉动；若后续希望扩大其他游戏参与，可增加无畏契约、英雄联盟的门店广播和上机提醒。
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="card-hd">
+              <div>
+                <h2>选择门店</h2>
+                <p>点击门店后，右侧展示该门店奖励统计。</p>
+              </div>
+            </div>
+            <div class="card-bd">
+              <div class="store-list">
+                <div class="store-item active"><div><b>天一网盟天泽店</b><span>完成 1,925 / 领取 1,488</span></div><strong>1</strong></div>
+                <div class="store-item"><div><b>天一网盟天启店</b><span>完成 1,916 / 领取 1,468</span></div><strong>2</strong></div>
+                <div class="store-item"><div><b>天一网盟天诚店</b><span>完成 1,741 / 领取 1,347</span></div><strong>3</strong></div>
+                <div class="store-item"><div><b>天一网盟天锐店</b><span>完成 1,677 / 领取 1,285</span></div><strong>4</strong></div>
+                <div class="store-item"><div><b>天一网盟天乐店</b><span>完成 1,003 / 领取 794</span></div><strong>5</strong></div>
+                <div class="store-item"><div><b>天一网盟星动店</b><span>完成 992 / 领取 822</span></div><strong>6</strong></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="record" class="panel">
+        <article class="card">
+          <div class="card-hd">
+            <div>
+              <h2>完成记录下钻</h2>
+              <p>用于从复盘报表继续查到玩家完成明细，平时不建议作为老板复盘首页。</p>
+            </div>
+            <span class="badge">明细层</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>门店ID</th>
+                  <th>门店名称</th>
+                  <th>完成时间</th>
+                  <th>玩家账号</th>
+                  <th>游戏名称</th>
+                  <th>活动任务</th>
+                  <th>达成奖励</th>
+                  <th>奖励类型</th>
+                  <th>发放状态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>8308</td><td>福州元洪店</td><td>2026-06-06 16:02:35</td><td>187****671</td><td>洛克王国：世界</td><td>每日登录游戏</td><td>--</td><td>虚拟</td><td><span class="tag">未发放</span></td></tr>
+                <tr><td>8461</td><td>武汉湖经店</td><td>2026-06-06 16:02:26</td><td>190****511</td><td>和平精英</td><td>当日累积游戏时长 &gt; 60 分钟</td><td>--</td><td>虚拟</td><td><span class="tag">未发放</span></td></tr>
+                <tr><td>9049</td><td>厦门文灶宝龙店</td><td>2026-06-06 16:02:16</td><td>189****100</td><td>三角洲行动</td><td>当日累计带出 500 万</td><td>电竞蜂10元网费</td><td>网费</td><td><span class="tag green">已发放</span></td></tr>
+                <tr><td>8896</td><td>大牛网咖经三路店</td><td>2026-06-06 16:02:12</td><td>174****773</td><td>英雄联盟</td><td>云顶排位吃鸡</td><td>10元网费</td><td>网费</td><td><span class="tag green">已发放</span></td></tr>
+                <tr><td>8456</td><td>武汉街道口店</td><td>2026-06-06 16:02:06</td><td>186****304</td><td>三角洲行动</td><td>当日累计带出 500 万</td><td>电竞蜂10元网费</td><td>网费</td><td><span class="tag orange">待领取</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <div class="rule-box" style="margin-top:16px;">
+          <b>口径说明：</b>完成任务数按玩家完成任务产生的记录统计；领取任务数按玩家成功领取奖励统计；兑换奖励数按奖励完成核销或兑换统计；奖励类型优先读取奖励配置，无法识别时归入“其他”。
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const tabs = Array.from(document.querySelectorAll(".report-tabs button"));
+    const panels = Array.from(document.querySelectorAll(".panel"));
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.panel;
+        tabs.forEach((item) => item.classList.toggle("active", item === tab));
+        panels.forEach((panel) => panel.classList.toggle("active", panel.id === target));
+      });
+    });
+
+    document.querySelectorAll(".quick button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".quick button").forEach((item) => item.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    document.querySelectorAll(".store-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        document.querySelectorAll(".store-item").forEach((store) => store.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>

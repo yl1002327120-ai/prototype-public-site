@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>杨柳｜SCRM私域客户运营闭环作品</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --panel: #ffffff;
+      --panel-soft: #f1f6ff;
+      --text: #111827;
+      --muted: #667085;
+      --line: #e4e9f2;
+      --blue: #1f6bff;
+      --blue-deep: #0b3fb8;
+      --cyan: #17b8c9;
+      --green: #18a058;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --purple: #7c3aed;
+      --shadow: 0 22px 60px rgba(20, 45, 90, 0.12);
+      --radius: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 0%, rgba(31, 107, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 92% 8%, rgba(23, 184, 201, 0.14), transparent 28%),
+        linear-gradient(180deg, #fbfdff 0%, var(--bg) 52%, #eef3fb 100%);
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(247, 250, 255, 0.84);
+      border-bottom: 1px solid rgba(228, 233, 242, 0.78);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: min(1180px, calc(100vw - 40px));
+      height: 68px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      border-radius: 12px;
+      box-shadow: 0 12px 24px rgba(31, 107, 255, 0.22);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .nav a:hover {
+      color: var(--blue);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 460px;
+      gap: 40px;
+      align-items: center;
+      padding: 74px 0 52px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 13px;
+      color: var(--blue-deep);
+      background: rgba(31, 107, 255, 0.09);
+      border: 1px solid rgba(31, 107, 255, 0.16);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 6px rgba(24, 160, 88, 0.14);
+    }
+
+    h1 {
+      max-width: 730px;
+      margin: 22px 0 18px;
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+    }
+
+    .hero-lead {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.85;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 46px;
+      padding: 0 20px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), #1557dd);
+      box-shadow: 0 14px 28px rgba(31, 107, 255, 0.22);
+    }
+
+    .btn-ghost {
+      color: var(--blue-deep);
+      background: #fff;
+      border: 1px solid #cfe0ff;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .chip {
+      padding: 8px 11px;
+      color: #38506f;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(213, 223, 238, 0.9);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(223, 231, 244, 0.92);
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -72px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(31, 107, 255, 0.18), transparent 68%);
+    }
+
+    .browser {
+      position: relative;
+      padding: 16px;
+      background: #0f172a;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .browser-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 24px;
+      margin-bottom: 16px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+
+    .dot:nth-child(2) {
+      background: #f59e0b;
+    }
+
+    .dot:nth-child(3) {
+      background: #22c55e;
+    }
+
+    .browser-title {
+      margin-left: 8px;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .dark-panel {
+      padding: 18px;
+      background: linear-gradient(180deg, #172033, #111827);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 20px;
+    }
+
+    .dark-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .dark-head b {
+      display: block;
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .dark-head span {
+      display: block;
+      margin-top: 6px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .score {
+      display: grid;
+      place-items: center;
+      min-width: 74px;
+      height: 38px;
+      color: #fff;
+      background: rgba(31, 107, 255, 0.22);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      border-radius: 16px;
+    }
+
+    .metric span {
+      display: block;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      color: #fff;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .mini-flow {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #dbeafe;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .flow-index {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      color: #fff;
+      background: var(--blue);
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .section {
+      padding: 48px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 22px;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 3vw, 40px);
+      line-height: 1.18;
+      letter-spacing: -0.04em;
+    }
+
+    .section-desc {
+      max-width: 560px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .problem-card {
+      min-height: 178px;
+      padding: 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 14px 38px rgba(20, 45, 90, 0.07);
+    }
+
+    .problem-card .num {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 18px;
+      color: var(--blue);
+      background: var(--panel-soft);
+      border-radius: 13px;
+      font-weight: 900;
+    }
+
+    .problem-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .problem-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 16px 42px rgba(20, 45, 90, 0.07);
+    }
+
+    .loop-item {
+      position: relative;
+      min-height: 124px;
+      padding: 16px;
+      background: linear-gradient(180deg, #fff, #f8fbff);
+      border: 1px solid #dfe8f6;
+      border-radius: 20px;
+    }
+
+    .loop-item:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -16px;
+      top: 50%;
+      z-index: 1;
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 900;
+      transform: translateY(-50%);
+    }
+
+    .loop-icon {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .loop-item b {
+      display: block;
+      font-size: 15px;
+    }
+
+    .loop-item span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .demo-shell {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      min-height: 660px;
+      background: #fff;
+      border: 1px solid #dfe7f3;
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .side {
+      padding: 22px 18px;
+      background: #0f172a;
+    }
+
+    .side-title {
+      margin-bottom: 18px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      min-height: 52px;
+      margin-bottom: 8px;
+      padding: 0 14px;
+      color: #a7b4c8;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 15px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: rgba(31, 107, 255, 0.22);
+      border-color: rgba(96, 165, 250, 0.28);
+    }
+
+    .demo-main {
+      background: #f7f9fd;
+    }
+
+    .demo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      padding: 0 28px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .demo-top h3 {
+      margin: 0;
+      font-size: 23px;
+    }
+
+    .demo-top span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .demo-content {
+      display: none;
+      padding: 24px 28px 30px;
+    }
+
+    .demo-content.active {
+      display: block;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .kpi span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .kpi strong {
+      display: block;
+      margin-top: 9px;
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .kpi small {
+      display: block;
+      margin-top: 9px;
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.9fr;
+      gap: 16px;
+    }
+
+    .widget {
+      padding: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .widget h4 {
+      margin: 0 0 16px;
+      font-size: 17px;
+    }
+
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 14px;
+      height: 208px;
+      padding: 14px 4px 4px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .bar {
+      flex: 1;
+      min-width: 18px;
+      background: linear-gradient(180deg, var(--blue), #8cc3ff);
+      border-radius: 12px 12px 4px 4px;
+    }
+
+    .funnel {
+      display: grid;
+      gap: 12px;
+    }
+
+    .funnel-row {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr) 54px;
+      gap: 10px;
+      align-items: center;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .funnel-track {
+      height: 12px;
+      background: #edf2f8;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .funnel-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      border-radius: inherit;
+    }
+
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .profile-card {
+      padding: 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 76px;
+      height: 76px;
+      margin-bottom: 16px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      border-radius: 24px;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .profile-card h4 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .profile-card p {
+      margin: 8px 0 16px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .data-tag {
+      padding: 6px 9px;
+      color: var(--blue-deep);
+      background: #eef5ff;
+      border: 1px solid #d8e7ff;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #edf1f7;
+      font-size: 14px;
+    }
+
+    .info-row span {
+      color: var(--muted);
+    }
+
+    .progress-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .progress-item {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr) 42px;
+      gap: 12px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .progress-track {
+      height: 10px;
+      background: #eef2f8;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+    }
+
+    .builder {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 16px;
+    }
+
+    .rule-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .rule {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr) 84px;
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      background: #f8fbff;
+      border: 1px solid #dfe8f6;
+      border-radius: 15px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .select-like {
+      padding: 9px 11px;
+      color: #334155;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+    }
+
+    .audience-box {
+      padding: 20px;
+      color: #fff;
+      background: linear-gradient(160deg, var(--blue), #0f3ea8);
+      border-radius: 22px;
+    }
+
+    .audience-box span {
+      color: #cfe0ff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .audience-box strong {
+      display: block;
+      margin: 12px 0 6px;
+      font-size: 36px;
+      line-height: 1;
+    }
+
+    .config-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      padding: 13px;
+      background: #f8fbff;
+      border: 1px solid #dfe8f6;
+      border-radius: 15px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .field b {
+      color: #1f2937;
+      font-size: 14px;
+    }
+
+    .reward-card {
+      padding: 18px;
+      background: linear-gradient(180deg, #fff7ed, #fff);
+      border: 1px solid #fed7aa;
+      border-radius: 20px;
+    }
+
+    .reward-card h4 {
+      color: #9a3412;
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .insight {
+      padding: 14px;
+      background: #f8fbff;
+      border: 1px solid #dfe8f6;
+      border-radius: 15px;
+    }
+
+    .insight b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .insight span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .ability-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .ability-card {
+      padding: 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 14px 38px rgba(20, 45, 90, 0.07);
+    }
+
+    .ability-card b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+
+    .ability-card span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.72;
+    }
+
+    .final-quote {
+      margin: 36px 0 72px;
+      padding: 30px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 92% 0%, rgba(23, 184, 201, 0.38), transparent 34%),
+        linear-gradient(135deg, #0f172a, #123c8c 74%, #1f6bff);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .final-quote b {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
+
+    .final-quote p {
+      max-width: 940px;
+      margin: 0;
+      color: #dbeafe;
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+    .mobile-note {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .canvas-grid,
+      .profile-layout,
+      .builder,
+      .config-grid,
+      .review-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-grid,
+      .ability-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .loop {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .loop-item:not(:last-child)::after {
+        display: none;
+      }
+
+      .demo-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .side-title {
+        grid-column: 1 / -1;
+      }
+
+      .tab-btn {
+        margin-bottom: 0;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page,
+      .topbar-inner {
+        width: min(100vw - 28px, 1180px);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 42px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .hero-lead {
+        font-size: 16px;
+      }
+
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .problem-grid,
+      .ability-grid,
+      .loop,
+      .dash-grid,
+      .form-grid,
+      .side {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-top {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        gap: 6px;
+        padding: 18px;
+      }
+
+      .demo-content {
+        padding: 18px;
+      }
+
+      .rule,
+      .progress-item,
+      .funnel-row {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-note {
+        display: block;
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark">杨</span>
+        <span>Yangliu Portfolio</span>
+      </a>
+      <nav class="nav">
+        <a href="#background">项目背景</a>
+        <a href="#loop">产品闭环</a>
+        <a href="#demo">核心页面</a>
+        <a href="#ability">能力体现</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <span class="eyebrow"><i class="pulse"></i>AI辅助可视化作品｜演示数据已脱敏模拟</span>
+        <h1>SCRM 私域客户运营闭环</h1>
+        <p class="hero-lead">
+          面向门店私域运营场景，将客户画像、人群包、营销活动、奖励核销和数据复盘串成一条完整链路，帮助运营从“凭经验做活动”升级为“基于客户数据做精准转化”。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#demo">查看核心页面</a>
+          <a class="btn btn-ghost" href="#loop">理解产品链路</a>
+        </div>
+        <div class="chips">
+          <span class="chip">CRM客户沉淀</span>
+          <span class="chip">SCRM私域运营</span>
+          <span class="chip">客户画像</span>
+          <span class="chip">人群包筛选</span>
+          <span class="chip">营销活动配置</span>
+          <span class="chip">数据复盘</span>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="作品概览">
+        <div class="browser">
+          <div class="browser-top">
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <span class="browser-title">SCRM Growth Console</span>
+          </div>
+          <div class="dark-panel">
+            <div class="dark-head">
+              <div>
+                <b>私域增长驾驶舱</b>
+                <span>客户洞察 → 精准触达 → 核销复购</span>
+              </div>
+              <div class="score">Demo</div>
+            </div>
+            <div class="metric-grid">
+              <div class="metric">
+                <span>私域客户</span>
+                <strong>82,416</strong>
+              </div>
+              <div class="metric">
+                <span>本月触达</span>
+                <strong>18,920</strong>
+              </div>
+              <div class="metric">
+                <span>活动参与</span>
+                <strong>6,438</strong>
+              </div>
+              <div class="metric">
+                <span>核销转化</span>
+                <strong>24.8%</strong>
+              </div>
+            </div>
+            <div class="mini-flow">
+              <div class="flow-row"><span class="flow-index">1</span>整合客户消费、活动、核销数据</div>
+              <div class="flow-row"><span class="flow-index">2</span>按行为与价值筛选运营人群</div>
+              <div class="flow-row"><span class="flow-index">3</span>配置活动权益并触达目标用户</div>
+              <div class="flow-row"><span class="flow-index">4</span>回收参与、核销、复购结果</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="background" class="section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">01 / Background</span>
+          <h2>为什么要做这个系统</h2>
+        </div>
+        <p class="section-desc">
+          这个作品不是单点抽奖工具，而是围绕私域运营的真实问题设计：用户在哪里、该触达谁、用什么权益转化、活动结束后如何复盘。
+        </p>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card">
+          <div class="num">01</div>
+          <h3>客户数据分散</h3>
+          <p>消费、活动、奖品、企微关系等数据散在不同系统，运营难以快速判断客户价值和真实偏好。</p>
+        </article>
+        <article class="problem-card">
+          <div class="num">02</div>
+          <h3>营销触达粗放</h3>
+          <p>活动常按全量客户推送，缺少分层策略，导致触达成本高、参与转化不稳定。</p>
+        </article>
+        <article class="problem-card">
+          <div class="num">03</div>
+          <h3>复盘依赖人工</h3>
+          <p>活动结束后需要人工统计参与、中奖、核销和复购效果，难以沉淀可复制的运营打法。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="loop" class="section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">02 / Product Loop</span>
+          <h2>把私域运营做成闭环</h2>
+        </div>
+        <p class="section-desc">
+          核心思路：先沉淀客户，再识别人群，再配置活动，最后把参与和核销结果回流到画像与报表。
+        </p>
+      </div>
+      <div class="loop">
+        <div class="loop-item">
+          <div class="loop-icon">引</div>
+          <b>公域引流</b>
+          <span>抖音、美团、活动入口承接新客</span>
+        </div>
+        <div class="loop-item">
+          <div class="loop-icon">沉</div>
+          <b>客户沉淀</b>
+          <span>统一客户档案、来源和行为记录</span>
+        </div>
+        <div class="loop-item">
+          <div class="loop-icon">画</div>
+          <b>客户画像</b>
+          <span>消费、偏好、参与、核销数据聚合</span>
+        </div>
+        <div class="loop-item">
+          <div class="loop-icon">选</div>
+          <b>人群包</b>
+          <span>按价值、活跃、流失风险筛人</span>
+        </div>
+        <div class="loop-item">
+          <div class="loop-icon">触</div>
+          <b>营销触达</b>
+          <span>抽奖、券、积分、任务组合运营</span>
+        </div>
+        <div class="loop-item">
+          <div class="loop-icon">复</div>
+          <b>数据复盘</b>
+          <span>参与、核销、复购结果回流</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo" class="section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">03 / Visual Demo</span>
+          <h2>核心页面演示</h2>
+        </div>
+        <p class="section-desc">
+          以下为面试展示用可视化页面，重点表达产品结构、关键字段、运营动作和数据口径，不展示真实客户数据。
+        </p>
+      </div>
+
+      <div class="demo-shell">
+        <aside class="side">
+          <div class="side-title">SCRM运营台</div>
+          <button class="tab-btn active" data-tab="overview">运营首页</button>
+          <button class="tab-btn" data-tab="profile">客户画像</button>
+          <button class="tab-btn" data-tab="segment">人群包筛选</button>
+          <button class="tab-btn" data-tab="campaign">营销活动配置</button>
+          <button class="tab-btn" data-tab="report">活动复盘报告</button>
+        </aside>
+
+        <section class="demo-main">
+          <div class="demo-top">
+            <div>
+              <h3 id="demoTitle">运营首页</h3>
+              <span id="demoSubtitle">查看私域客户、活动转化和核销复购情况</span>
+            </div>
+            <span>更新时间：今日 10:30</span>
+          </div>
+
+          <div class="demo-content active" id="overview">
+            <div class="dash-grid">
+              <div class="kpi"><span>私域客户总量</span><strong>82,416</strong><small>较上月 +8.6%</small></div>
+              <div class="kpi"><span>近30天到店</span><strong>21,758</strong><small>较上月 +5.1%</small></div>
+              <div class="kpi"><span>活动参与人数</span><strong>6,438</strong><small>转化率 34.0%</small></div>
+              <div class="kpi"><span>奖品核销率</span><strong>24.8%</strong><small>待提升人群 1,206</small></div>
+            </div>
+            <div class="canvas-grid">
+              <div class="widget">
+                <h4>近7日私域流量趋势</h4>
+                <div class="bar-chart">
+                  <div class="bar" style="height: 48%"></div>
+                  <div class="bar" style="height: 56%"></div>
+                  <div class="bar" style="height: 44%"></div>
+                  <div class="bar" style="height: 72%"></div>
+                  <div class="bar" style="height: 64%"></div>
+                  <div class="bar" style="height: 86%"></div>
+                  <div class="bar" style="height: 78%"></div>
+                </div>
+              </div>
+              <div class="widget">
+                <h4>活动转化漏斗</h4>
+                <div class="funnel">
+                  <div class="funnel-row"><span>目标人群</span><i class="funnel-track"><b class="funnel-fill" style="width:100%"></b></i><em>18,920</em></div>
+                  <div class="funnel-row"><span>已触达</span><i class="funnel-track"><b class="funnel-fill" style="width:82%"></b></i><em>15,514</em></div>
+                  <div class="funnel-row"><span>已参与</span><i class="funnel-track"><b class="funnel-fill" style="width:34%"></b></i><em>6,438</em></div>
+                  <div class="funnel-row"><span>已中奖</span><i class="funnel-track"><b class="funnel-fill" style="width:18%"></b></i><em>3,426</em></div>
+                  <div class="funnel-row"><span>已核销</span><i class="funnel-track"><b class="funnel-fill" style="width:12%"></b></i><em>2,144</em></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-content" id="profile">
+            <div class="profile-layout">
+              <div class="profile-card">
+                <div class="avatar">顾</div>
+                <h4>高活跃玩家 A</h4>
+                <p>近30天到店 9 次，偏好竞技类游戏，活动参与积极但优惠券核销不稳定。</p>
+                <div class="tag-list">
+                  <span class="data-tag">高价值客户</span>
+                  <span class="data-tag">赛事活跃</span>
+                  <span class="data-tag">夜间到店</span>
+                  <span class="data-tag">券待核销</span>
+                </div>
+              </div>
+              <div class="widget">
+                <h4>客户关键数据</h4>
+                <div class="info-list">
+                  <div class="info-row"><span>最近到店</span><b>2026-07-06 21:18</b></div>
+                  <div class="info-row"><span>近30天消费</span><b>428 元</b></div>
+                  <div class="info-row"><span>活动参与</span><b>7 次</b></div>
+                  <div class="info-row"><span>中奖记录</span><b>3 次</b></div>
+                  <div class="info-row"><span>核销记录</span><b>1 次</b></div>
+                </div>
+              </div>
+            </div>
+            <div class="canvas-grid" style="margin-top:16px">
+              <div class="widget">
+                <h4>偏好分析</h4>
+                <div class="progress-list">
+                  <div class="progress-item"><span>竞技游戏</span><i class="progress-track"><b class="progress-fill" style="width:86%"></b></i><em>86</em></div>
+                  <div class="progress-item"><span>抽奖活动</span><i class="progress-track"><b class="progress-fill" style="width:72%"></b></i><em>72</em></div>
+                  <div class="progress-item"><span>团购权益</span><i class="progress-track"><b class="progress-fill" style="width:58%"></b></i><em>58</em></div>
+                  <div class="progress-item"><span>赛事报名</span><i class="progress-track"><b class="progress-fill" style="width:76%"></b></i><em>76</em></div>
+                </div>
+              </div>
+              <div class="widget">
+                <h4>建议动作</h4>
+                <div class="insight-list">
+                  <div class="insight"><b>发放限时核销券</b><span>该客户参与高但核销弱，适合用短有效期权益推动到店。</span></div>
+                  <div class="insight"><b>推荐赛事类活动</b><span>游戏偏好与历史行为匹配赛事活动，可加入赛事活跃人群包。</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-content" id="segment">
+            <div class="builder">
+              <div class="widget">
+                <h4>创建人群包：高价值待唤醒客户</h4>
+                <div class="rule-group">
+                  <div class="rule"><span>消费金额</span><b class="select-like">近90天累计消费 ≥ 300元</b><em>且</em></div>
+                  <div class="rule"><span>活动行为</span><b class="select-like">近60天参与活动 ≥ 2次</b><em>且</em></div>
+                  <div class="rule"><span>到店状态</span><b class="select-like">近14天未到店</b><em>且</em></div>
+                  <div class="rule"><span>权益状态</span><b class="select-like">存在未核销优惠券</b><em>完成</em></div>
+                </div>
+              </div>
+              <div class="audience-box">
+                <span>预计可触达人群</span>
+                <strong>3,284</strong>
+                <p>建议用于“回流券 + 抽奖权益”组合活动，优先推送最近消费高但短期未到店的客户。</p>
+              </div>
+            </div>
+            <div class="widget" style="margin-top:16px">
+              <h4>人群包应用场景</h4>
+              <div class="tag-list">
+                <span class="data-tag">沉默客户召回</span>
+                <span class="data-tag">赛事活跃用户促转化</span>
+                <span class="data-tag">高价值客户专属活动</span>
+                <span class="data-tag">中奖未核销提醒</span>
+                <span class="data-tag">新客首单后复购</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-content" id="campaign">
+            <div class="config-grid">
+              <div class="widget">
+                <h4>营销活动配置</h4>
+                <div class="form-grid">
+                  <div class="field"><label>活动名称</label><b>暑期回流抽奖活动</b></div>
+                  <div class="field"><label>目标人群</label><b>高价值待唤醒客户</b></div>
+                  <div class="field"><label>活动时间</label><b>7月8日 - 7月21日</b></div>
+                  <div class="field"><label>触达方式</label><b>企微消息 / 小程序弹窗</b></div>
+                  <div class="field"><label>参与规则</label><b>到店消费后获得抽奖机会</b></div>
+                  <div class="field"><label>核销门店</label><b>全部参与门店</b></div>
+                </div>
+              </div>
+              <div class="reward-card">
+                <h4>奖励组合</h4>
+                <div class="info-list">
+                  <div class="info-row"><span>一等奖</span><b>100元上机券</b></div>
+                  <div class="info-row"><span>二等奖</span><b>饮品兑换券</b></div>
+                  <div class="info-row"><span>参与奖</span><b>积分 + 5元券</b></div>
+                  <div class="info-row"><span>核销提醒</span><b>到期前自动触达</b></div>
+                </div>
+              </div>
+            </div>
+            <div class="widget" style="margin-top:16px">
+              <h4>配置价值</h4>
+              <div class="insight-list">
+                <div class="insight"><b>运营不用重新建活动链路</b><span>选择人群包、配置权益、设置触达后即可上线，减少重复沟通和人工统计。</span></div>
+                <div class="insight"><b>数据天然可回收</b><span>参与、中奖、核销、复购结果会回流到客户画像与活动复盘报告。</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="demo-content" id="report">
+            <div class="dash-grid">
+              <div class="kpi"><span>目标人群</span><strong>3,284</strong><small>触达率 91.2%</small></div>
+              <div class="kpi"><span>参与人数</span><strong>1,146</strong><small>参与率 38.3%</small></div>
+              <div class="kpi"><span>核销人数</span><strong>427</strong><small>核销率 37.2%</small></div>
+              <div class="kpi"><span>复购人数</span><strong>286</strong><small>复购率 24.9%</small></div>
+            </div>
+            <div class="review-grid">
+              <div class="widget">
+                <h4>门店转化对比</h4>
+                <div class="bar-chart">
+                  <div class="bar" style="height: 78%"></div>
+                  <div class="bar" style="height: 58%"></div>
+                  <div class="bar" style="height: 86%"></div>
+                  <div class="bar" style="height: 42%"></div>
+                  <div class="bar" style="height: 64%"></div>
+                </div>
+              </div>
+              <div class="widget">
+                <h4>复盘结论</h4>
+                <div class="insight-list">
+                  <div class="insight"><b>高消费沉默客户召回效果较好</b><span>建议将该人群沉淀为固定运营人群，按月复用。</span></div>
+                  <div class="insight"><b>核销率低于参与率</b><span>建议增加到期前提醒和门店端现场提醒，提高权益兑现。</span></div>
+                  <div class="insight"><b>赛事活跃客户转化更高</b><span>后续可把游戏偏好与赛事报名数据纳入活动推荐策略。</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <p class="mobile-note">提示：移动端可上下滚动查看完整模拟页面。</p>
+    </section>
+
+    <section id="ability" class="section">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">04 / PM Ability</span>
+          <h2>这个作品想展示的产品能力</h2>
+        </div>
+        <p class="section-desc">
+          面试时可以围绕这四点展开讲：不是页面好看，而是你能把业务问题拆成产品链路，并通过数据持续验证。
+        </p>
+      </div>
+      <div class="ability-grid">
+        <article class="ability-card">
+          <b>业务抽象</b>
+          <span>把门店私域运营抽象为客户沉淀、分层触达、权益转化和数据回流四个核心环节。</span>
+        </article>
+        <article class="ability-card">
+          <b>CRM数据意识</b>
+          <span>关注客户来源、消费、行为、标签、核销和复购等数据，支撑后续精细化运营。</span>
+        </article>
+        <article class="ability-card">
+          <b>营销产品设计</b>
+          <span>通过人群包和活动配置降低运营门槛，让抽奖、券、积分、任务能组合使用。</span>
+        </article>
+        <article class="ability-card">
+          <b>AI表达效率</b>
+          <span>基于真实业务经验完成方案设计，并使用 AI 辅助生成可视化 HTML，提高沟通效率。</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="final-quote">
+      <b>一句话总结</b>
+      <p>
+        这个作品展示的是一个完整的私域增长闭环：先通过客户画像理解用户，再通过人群包找到目标客户，随后配置营销活动完成触达转化，最后用数据复盘沉淀下一轮运营策略。
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const titles = {
+      overview: ["运营首页", "查看私域客户、活动转化和核销复购情况"],
+      profile: ["客户画像", "把消费、偏好、活动、核销数据沉淀到单个客户视图"],
+      segment: ["人群包筛选", "按客户价值、行为和权益状态筛选可运营人群"],
+      campaign: ["营销活动配置", "基于人群包配置权益、规则、触达和核销门店"],
+      report: ["活动复盘报告", "回收触达、参与、中奖、核销和复购结果"]
+    };
+
+    document.querySelectorAll(".tab-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const target = button.dataset.tab;
+        document.querySelectorAll(".tab-btn").forEach((item) => item.classList.remove("active"));
+        document.querySelectorAll(".demo-content").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById(target).classList.add("active");
+        document.getElementById("demoTitle").textContent = titles[target][0];
+        document.getElementById("demoSubtitle").textContent = titles[target][1];
+      });
+    });
+  </script>
+</body>
+</html>
